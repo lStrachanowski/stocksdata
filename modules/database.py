@@ -7,8 +7,6 @@ import credentials
 import csv
 
 engine = create_engine("postgresql://postgres:"+credentials.PASSWORD + "@localhost/" + credentials.DATABASE_NAME,echo = True)
-conn = engine.connect()
-
 meta = MetaData()
 
 # Towrzy tabele stocks
@@ -56,9 +54,27 @@ def load_stock_data():
             stocks_data.append( {"TICKER":row[1], "NAME":row[0],"ISIN":row[2]})
         conn = engine.connect()
         conn.execute(stocks.insert(), stocks_data)
+        conn.close()
+        
 
-def test():
-    print(os.getcwd())
-    print("test")
+def get_data(value):
+    if value == 'stocks':
+        selected = stocks.select()
+        conn = engine.connect()
+        results = conn.execute(selected)
+        conn.close()
+        return results
+    elif value =='day_transactions':
+        selected = day_transactions.select()
+        conn = engine.connect()
+        results = conn.execute(selected)
+        conn.close()
+        return results
+    else:
+        selected = details_day_transactions.select()
+        conn = engine.connect()
+        results = conn.execute(selected)
+        conn.close()
+        return results
 
 
