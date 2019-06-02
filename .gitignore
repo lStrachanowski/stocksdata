@@ -1,2 +1,3 @@
+*.mst
 /modules/credentials.py
 /modules/__pycache__/

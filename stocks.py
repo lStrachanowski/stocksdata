@@ -12,3 +12,4 @@ import database
 #     print(v)
     
 database.download_data()
+database.unzip_file()

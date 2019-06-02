@@ -1,13 +1,14 @@
 import sys
 import os
 import requests
-from sqlalchemy import create_engine, MetaData, Table, Column,String,Numeric,Integer,Time,Date
+import zipfile
+from sqlalchemy import create_engine, MetaData, Table, Column,String,Numeric,Integer,Time,Date, select,exists
 sys.path.append(os.getcwd()+'\\modules\\')
 import credentials 
 # zawiera login i hasło do bazy danych 
 import csv
 
-engine = create_engine("postgresql://postgres:"+credentials.PASSWORD + "@localhost/" + credentials.DATABASE_NAME,echo = True)
+engine = create_engine("postgresql://postgres:"+credentials.PASSWORD + "@localhost/" + credentials.DATABASE_NAME)
 meta = MetaData()
 
 # Towrzy tabele stocks
@@ -100,3 +101,44 @@ def download_data():
         print("Downloading NewConnect data ended.")
     except:
         print("Something went wrong with dowloading NewConnect data.")
+
+# Wypakowuje dane z pliku zip I usuwa zbędne pliki      
+def unzip_file():
+    gpw_file = 'mstall.zip'
+    newconnect_file = 'mstncn.zip'
+    directory = os.getcwd()+'\\data\\'
+    try:
+        print('Unzipping GPW file.')
+        with zipfile.ZipFile(directory + gpw_file) as myzip:
+            myzip.extractall(directory)
+        print('GPW files unziped.')
+        if os.path.isfile(directory + gpw_file):
+            os.remove(directory + gpw_file) 
+        print('Unzipping Newconnect file.')
+        with zipfile.ZipFile(directory + newconnect_file) as myzip_newconnect:
+            myzip_newconnect.extractall(directory)
+        print('Newconnect files unziped.')
+        if os.path.isfile(directory + newconnect_file):
+            os.remove(directory + newconnect_file) 
+
+        # Usuwa pliki ze starymi akcjami  
+        print('Start to delete old files')
+        with open('oldstocks.csv', newline='') as file:
+            reader = csv.reader(file, delimiter=' ')
+            for item in list(reader)[:-1]:
+                file_path = directory + item[0]
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+        print('Old files deleted')
+        print('Start to delete old files')
+        for file in os.listdir(directory):
+            conn = engine.connect()
+            check = exists(select([stocks]).where(stocks.c.NAME == file[:-4])).select()
+            pr = conn.execute(check)
+            conn.close()
+            if pr.first()[0] == False:
+                if os.path.isfile(directory + file):
+                    os.remove(directory + file)
+        print('Old files deleted')
+    except:
+        print("Something went wrong with file unzipping")
