@@ -7,9 +7,11 @@ import database
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()
 
-# stocks = database.get_data('stocks')
-# for v in stocks:
-#     print(v)
-    
-database.download_data()
-database.unzip_file()
+# Pobiera dane o walorach z internetu     
+# database.download_data()
+
+# Wypakowuje dane
+# database.unzip_file()
+
+# Inicjuje dane o dziennych zmianach w bazie danych 
+# database.load_stocks_details()

@@ -2,7 +2,8 @@ import sys
 import os
 import requests
 import zipfile
-from sqlalchemy import create_engine, MetaData, Table, Column,String,Numeric,Integer,Time,Date, select,exists
+from datetime import datetime
+from sqlalchemy import create_engine, MetaData, Table, Column,String,Numeric,Integer,Time,Date, select,exists, func, and_
 sys.path.append(os.getcwd()+'\\modules\\')
 import credentials 
 # zawiera login i hasło do bazy danych 
@@ -10,7 +11,7 @@ import csv
 
 engine = create_engine("postgresql://postgres:"+credentials.PASSWORD + "@localhost/" + credentials.DATABASE_NAME)
 meta = MetaData()
-
+directory = os.getcwd()+'\\data\\'
 # Towrzy tabele stocks
 stocks = Table(
     "stocks", meta,
@@ -23,7 +24,7 @@ stocks = Table(
 day_transactions = Table(
     'day_transactions', meta, 
     Column("TICKER", String),
-    Column("DATE", Date, primary_key=True),
+    Column("DATE", Date),
     Column("OPEN",Numeric),
     Column("HIGH",Numeric),
     Column("LOW",Numeric),
@@ -45,7 +46,7 @@ details_day_transactions = Table(
 )
 
 # Inicjuje tabele w bazie danych
-# meta.create_all(engine)
+meta.create_all(engine)
 
 # Metoda, która pobiera dane walorów z pliku csv i dodaje je do bazy danych
 def load_stock_data():
@@ -58,6 +59,27 @@ def load_stock_data():
         conn.execute(stocks.insert(), stocks_data)
         conn.close()
 
+# Pobiera dane z plików i inicjuje je w bazie danych
+def load_stocks_details():
+    for file in os.listdir(directory):
+        print(file)
+        with open(directory+file,newline='', mode="r" ) as csv_file:
+            csv_data = csv.reader(csv_file, delimiter=',')
+            stocks_data = []
+            itercsv = iter(csv_data)
+            next(itercsv)
+            for row in itercsv:
+                datetime_object = datetime.strptime(row[1],"%Y%m%d")
+                name = row[0]
+                stock_open = row[2]
+                stock_high = row[3]
+                stock_low = row[4]
+                stock_close = row[5]
+                stock_volume = row[6]
+                stocks_data.append({"TICKER":name,"DATE":datetime_object, "OPEN": float(stock_open),"HIGH": float(stock_high), "LOW": float(stock_close), "CLOSE": float(stock_low), "VOLUME": int(stock_volume)  })
+            conn = engine.connect()
+            conn.execute(day_transactions.insert(), stocks_data)
+            conn.close()
 
 # Pobiera wartości z bazy danych 
 def get_data(value):
@@ -106,7 +128,6 @@ def download_data():
 def unzip_file():
     gpw_file = 'mstall.zip'
     newconnect_file = 'mstncn.zip'
-    directory = os.getcwd()+'\\data\\'
     try:
         print('Unzipping GPW file.')
         with zipfile.ZipFile(directory + gpw_file) as myzip:
@@ -142,3 +163,5 @@ def unzip_file():
         print('Old files deleted')
     except:
         print("Something went wrong with file unzipping")
+
+
