@@ -1,3 +1,4 @@
 *.mst
+*.prn
 /modules/credentials.py
 /modules/__pycache__/
