@@ -2,15 +2,33 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Stock analyzer</title>
-  <meta name="author" content="">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link href="{{url_for('static', filename='css/styl.css')}}" rel="stylesheet"> -->
-  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="utf-8">
+    <title>Stock analyzer</title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
+
 <body>
-Start test
+    <div class="main-container">
+        <div class="header-style">
+            <a href="{{ url_for('index') }}">Stock analyzer</a>
+        </div>
+        <div class="selection-container">
+            <input placeholder="Search">
+            <div class="select-style">
+                <select>
+                    <option>PKN</option>
+                    <option>ORANGE</option>
+                    <option>LOTOS</option>
+                    <option>WIELTON</option>
+                </select>
+            </div>
+            <div class="search-button">Szukaj</div>
+        </div>
+    </div>
 </body>
+
 </html>

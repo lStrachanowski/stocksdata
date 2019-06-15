@@ -1,0 +1,86 @@
+.header-style{
+    font-size: 2em;
+    color: rgb(255, 100, 34);
+    margin:2%;
+    font-family: Arial;
+}
+.main-container{
+    display: flex;
+    margin: 2%;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    font-family: Arial;
+}
+
+a:link{
+    color: rgb(255, 100, 34);
+    text-decoration: none;
+}
+
+a:visited {
+    color: rgb(150, 146, 144);
+  }
+
+a:hover{
+    color: rgb(164, 62, 18);
+}
+
+.selection-container{
+    background: #eeeeee;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 9px;
+    justify-content: space-evenly;
+}
+
+input{
+    font-family: Arial;
+    padding: 1%;
+    margin: 1%;
+    color: #3da846;
+    font-weight: 600;
+    border: 0px solid white;
+    width: 40%;
+    font-size:20px;
+    border-radius: 9px;
+}
+
+.search-button{
+    background: #3da846;
+    padding: 1%;
+    margin: 1%;
+    font-size:15px;
+    color: white; 
+    width: 7%;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 9px;
+}
+.search-button:hover{
+    transition: 0.3s;
+    background: #0f869d;
+}
+
+.select-style{
+    width: 33%;
+    background: #3da846;
+    text-align: center;
+    color: #fbfbfb;
+    font-size:15px;
+}
+
+.select-style select{
+    padding: 16px 20px;
+    border: none;
+    background-color: #fffefe;
+    font-size: 1.25em;
+    width: 100%;
+    color: #3da846;
+    text-align-last: center;
+    text-align: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
+}
