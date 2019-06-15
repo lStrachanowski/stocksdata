@@ -4,6 +4,13 @@ import os
 sys.path.append(os.getcwd()+'\\modules\\')
 import database
 import csv
+from flask import Flask
+from flask import render_template
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()
@@ -29,4 +36,4 @@ import csv
 
 
 
-database.update_db()
+# database.update_db()

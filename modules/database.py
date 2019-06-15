@@ -120,7 +120,7 @@ def load_stocks_details():
 #Dodaje pozycje o walorze do bazy danych
 def add_stock_data(stock):
     stocks_data = []
-    datetime_object = datetime.strptime(stock[1],"%Y%m%d")
+    datetime_object = datetime.datetime.strptime(stock[1],"%Y%m%d")
     name = stock[0]
     stock_open = stock[2]
     stock_high = stock[3]
@@ -209,7 +209,6 @@ def delete_old_files():
             if os.path.isfile(directory + file):
                 os.remove(directory + file)
     print('Old files deleted')    
-
 
 # Pobiera aktualne dane
 def download_week():
