@@ -14,21 +14,23 @@
 <body>
     <div class="main-container">
         <div class="header-style">
-            <a href="{{ url_for('index') }}">Stock analyzer</a>
+            <a href="{{url_for('index')}}">Stock analyzer</a>
         </div>
+        <form method="POST" action="{{url_for('index')}}">
         <div class="selection-container">
-            <input placeholder="Search">
+            <input placeholder="Search" id="search_input">
             <div class="select-style">
-                <select>
-                    <option>PKN</option>
-                    <option>ORANGE</option>
-                    <option>LOTOS</option>
-                    <option>WIELTON</option>
+                <select name="stock_fist_form">
+                    {% for stocks in stock_list %}
+                    <option val={{stocks[1]}}>{{stocks[1]}}</option>
+                    {% endfor %}
                 </select>
             </div>
-            <div class="search-button">Szukaj</div>
+            <button class="search-button" type="submit">Go</button>
         </div>
+    </form>
     </div>
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
 
 </html>

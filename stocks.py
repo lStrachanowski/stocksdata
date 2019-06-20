@@ -5,12 +5,19 @@ sys.path.append(os.getcwd()+'\\modules\\')
 import database
 import csv
 from flask import Flask
-from flask import render_template
+from flask import render_template, request
+import requests
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/' , methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    stock_list = database.get_data('stocks')
+    # database.update_db()
+    if request.method == 'POST':
+        print(request.form.get('stock_fist_form')) 
+        print(request.form.get('search_value'))
+        
+    return render_template('index.html', stock_list=list(stock_list))
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()
@@ -36,4 +43,3 @@ def index():
 
 
 
-# database.update_db()
