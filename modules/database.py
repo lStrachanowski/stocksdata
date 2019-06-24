@@ -8,9 +8,9 @@ sys.path.append(os.getcwd()+'\\modules\\')
 import credentials 
 # zawiera login i hasło do bazy danych 
 import csv
-
 engine = create_engine("postgresql://postgres:"+credentials.PASSWORD + "@localhost/" + credentials.DATABASE_NAME)
 meta = MetaData()
+
 # Towrzy tabele stocks
 stocks = Table(
     "stocks", meta,
@@ -43,6 +43,7 @@ details_day_transactions = Table(
     Column("CLOSE",Numeric),
     Column("VOLUME",Numeric )
 )
+
 
 # Inicjuje tabele w bazie danych
 # meta.create_all(engine)
@@ -261,3 +262,11 @@ def update_db():
         delete_old_files()
         load_stocks_details()
         print('Baza aktualna')
+
+def search_value(value):
+    conn = engine.connect()
+    result = stocks.select().where(stocks.c.NAME.like('{}%'.format(value.upper())))
+    data = conn.execute(result)
+    conn.close()
+    return data
+

@@ -4,20 +4,38 @@ import os
 sys.path.append(os.getcwd()+'\\modules\\')
 import database
 import csv
+import json
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request,redirect, url_for, jsonify
 import requests
 app = Flask(__name__)
+
+stock_list = []
 
 @app.route('/' , methods=['GET', 'POST'])
 def index():
     stock_list = database.get_data('stocks')
-    # database.update_db()
     if request.method == 'POST':
-        print(request.form.get('stock_fist_form')) 
-        print(request.form.get('search_value'))
-        
+        # search_results = request.form.get('search_value')
+        selected_result = request.form.get('stock_list_form')
+        print(selected_result)
+
+    # database.update_db()
     return render_template('index.html', stock_list=list(stock_list))
+ 
+@app.route('/search' , methods=['GET', 'POST'])        
+def search():
+    if request.method == 'POST':
+        search_results = request.form.get('search_value')
+        if search_results:
+                stock_list = database.search_value(search_results)
+                return json.dumps([{"name": val[1]} for val in stock_list])
+        else:
+                return json.dumps([{"error": False}])
+
+        
+
+    
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()

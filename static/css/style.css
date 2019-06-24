@@ -85,3 +85,32 @@ input{
     -ms-text-align-last: center;
     -moz-text-align-last: center;
 }
+
+.search-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 1%;
+    justify-content:center;
+}
+
+.search-result{
+    background-color: #e29e30;
+    color: white;
+    font-size: 13px;
+    padding: 1%;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.1s;
+    font-weight: 600;
+}
+
+.search-result:hover{
+    background-color: #ae3b0d;
+}
+
+.alert{
+    background-color: #980202;
+}
