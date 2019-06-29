@@ -20,7 +20,7 @@ def index():
         selected_result = request.form.get('stock_list_form')
         print(selected_result)
 
-    # database.update_db()
+#     database.update_db()
     return render_template('index.html', stock_list=list(stock_list))
  
 @app.route('/search' , methods=['GET', 'POST'])        

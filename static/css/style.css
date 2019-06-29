@@ -1,6 +1,6 @@
 .header-style{
     font-size: 2em;
-    color: rgb(255, 100, 34);
+    color: #ff6422;
     margin:2%;
     font-family: Arial;
 }
@@ -20,7 +20,7 @@ a:link{
 }
 
 a:visited {
-    color: rgb(150, 146, 144);
+    color: #969290;
   }
 
 a:hover{
@@ -114,3 +114,22 @@ input{
 .alert{
     background-color: #980202;
 }
+
+
+.loader {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: animation-style 1.25s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3da846;
+    border-bottom: 16px solid  #3da846;
+    margin: 5px;
+  }
+  
+  @keyframes animation-style {
+    0% { transform: rotate(0deg);background-color: rgb(255, 255, 255); }
+    25%{      width: 60px; height: 60px;border-top: 16px solid #b23131;border-bottom: 16px solid #b23131}
+    50%{      width: 50px; height: 50px;border-top: 16px solid #b23131;border-bottom: 16px solid #b23131}
+    100% { transform: rotate(360deg);background-color: rgb(255, 255, 255); }
+  }
