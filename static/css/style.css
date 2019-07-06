@@ -1,9 +1,4 @@
-.header-style{
-    font-size: 2em;
-    color: #ff6422;
-    margin:2%;
-    font-family: Arial;
-}
+
 .main-container{
     display: flex;
     margin: 2%;
@@ -117,6 +112,7 @@ input{
 
 
 .loader {
+    display: none;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -124,12 +120,53 @@ input{
     border: 16px solid #f3f3f3;
     border-top: 16px solid #3da846;
     border-bottom: 16px solid  #3da846;
-    margin: 5px;
+    margin: auto;
   }
   
-  @keyframes animation-style {
+@keyframes animation-style {
     0% { transform: rotate(0deg);background-color: rgb(255, 255, 255); }
-    25%{      width: 60px; height: 60px;border-top: 16px solid #b23131;border-bottom: 16px solid #b23131}
-    50%{      width: 50px; height: 50px;border-top: 16px solid #b23131;border-bottom: 16px solid #b23131}
+    25%{ width: 60px; height: 60px;border-top: 16px solid #b23131;border-bottom: 16px solid #b23131}
+    50%{ width: 50px; height: 50px;border-top: 16px solid #b23131;border-bottom: 16px solid #b23131}
     100% { transform: rotate(360deg);background-color: rgb(255, 255, 255); }
-  }
+} 
+
+.update-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    display: flex;
+    margin: 15px;
+    width: 20%;
+    
+}
+
+.update-button{
+    padding: 0.6%;
+    background: #c30000;
+}
+.update-button:hover{
+    background: #720000;
+}
+
+.header-container{
+    flex-direction: row;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+
+.header-style{
+    font-size: 2em;
+    color: #ff6422;
+    margin:2%;
+    font-family: Arial;
+    /* width: 80%; */
+    width: 100%;
+    justify-content: flex-end;
+    /* margin-right: -20%; */
+}
+
+.content-block-style{
+    display: block;
+}

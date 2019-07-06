@@ -48,10 +48,23 @@ details_day_transactions = Table(
 # Inicjuje tabele w bazie danych
 # meta.create_all(engine)
 
-# Usuwa / tworzy tabele z bazy danych 
-# d-drop
-# c-create
+
 def table_operations(table_name, operation):
+    """
+     Usuwa / tworzy tabele z bazy danych 
+
+    Parameters
+    ----------
+    table_name:String
+        Nazwa tabeli w bazie danych 
+
+    operation:String
+        W zależności od opcji wykonywane są operacje na tabeli:
+        - d 
+          "drop" usuwa tabelę z bazy danych 
+        - c
+          "create" tworzy tabelę w bazie danych
+    """
     if table_name == 'stocks':
         if operation == 'd':
             stocks.drop(engine)
@@ -68,8 +81,11 @@ def table_operations(table_name, operation):
         if operation == 'c':
             details_day_transactions.create(engine)
         
-# Metoda, która pobiera dane walorów z pliku csv i dodaje je do bazy danych
+
 def load_stock_data():
+    """
+    Metoda, która pobiera dane walorów z pliku csv i dodaje je do bazy danych
+    """
     with open(os.getcwd()+'\\stock_tickers.csv' ,newline='', mode='r') as csv_file:
         csv_data = csv.reader(csv_file, delimiter=';')
         stocks_data = []
@@ -79,24 +95,44 @@ def load_stock_data():
         conn.execute(stocks.insert(), stocks_data)
         conn.close()
 
-# Pobiera z bazy dane o walorze z podanego okresu
+
 def get_data_from_db(from_date,to_date,stock_name):
+    """
+    Pobiera z bazy dane o walorze z podanego okresu
+    
+    Parameters
+    ----------
+    from_date:String
+        Data , od której zacząć podbieranie danych o walorze
+
+    to_date:String
+        Data , do której zacząć podbieranie danych o walorze
+
+    stock_name:String
+        Nazwa waloru do wyszukania w bazie danych 
+    """
     selected = day_transactions.select().where(and_(day_transactions.c.DATE >= from_date , day_transactions.c.DATE <= to_date, day_transactions.c.NAME == stock_name.upper())).order_by(day_transactions.c.DATE)
     conn = engine.connect()
     data = conn.execute(selected)
     conn.close()
     return data 
 
-# Sprawdza datę ostatniego wpisu w bazie danych 
+
 def check_last_entry():
+    """
+    Sprawdza datę ostatniego wpisu w bazie danych 
+    """
     selected = day_transactions.select().where(day_transactions.c.NAME == 'WIG20').order_by(desc(day_transactions.c.DATE)).limit(1)
     conn = engine.connect()
     data = conn.execute(selected)
     conn.close()
     return data
 
-# Pobiera dane z plików i inicjuje je w bazie danych
+
 def load_stocks_details():
+    """
+    Pobiera dane z plików i inicjuje je w bazie danych
+    """
     directory = os.getcwd()+'\\data\\'
     for file in os.listdir(directory):
         print(file)
@@ -118,8 +154,17 @@ def load_stocks_details():
             conn.execute(day_transactions.insert(), stocks_data)
             conn.close()
 
-#Dodaje pozycje o walorze do bazy danych
+
 def add_stock_data(stock):
+    """
+    Dodaje pozycje o walorze do bazy danych
+
+    Parameters
+    ----------
+    stock:String
+        Nazwa waloru
+    """
+
     stocks_data = []
     datetime_object = datetime.datetime.strptime(stock[1],"%Y%m%d")
     name = stock[0]
@@ -133,8 +178,17 @@ def add_stock_data(stock):
     conn.execute(day_transactions.insert(), stocks_data)
     conn.close()
 
-# Pobiera wartości z bazy danych 
+
 def get_data(value):
+    """
+    Pobiera wartości z bazy danych 
+
+    Parameters
+    ----------
+    value:String
+        W zależności od wartości pobiera dane z wybranej tabeli
+    """
+
     if value == 'stocks':
         selected = stocks.select()
         conn = engine.connect()
@@ -154,8 +208,11 @@ def get_data(value):
         conn.close()
         return results
 
-# Pobiera dane end of day ze strony BOŚ
+
 def download_data():
+    """
+    Pobiera dane end of day ze strony BOŚ
+    """
     url = "http://bossa.pl/pub/metastock/mstock/mstall.zip"
     url_newconnect = "http://bossa.pl/pub/newconnect/mstock/mstncn.zip"
     path = os.getcwd()+'\\data\\'
@@ -176,8 +233,19 @@ def download_data():
     except:
         print("Something went wrong with dowloading NewConnect data.")
 
-# Wypakowuje dane z pliku zip I usuwa zbędne pliki      
+    
 def unzip_file(directory, file_list):
+    """
+    Wypakowuje dane z pliku zip I usuwa zbędne pliki 
+
+    Parameters
+    ----------
+    directory:String
+        Ścieżka do lokalizacji
+
+    file_list:List
+        Lista z nazwami plików do rozpakowania
+    """
     try:
         for item in file_list:
             print('Unzipping ' + item + ' file.')
@@ -189,8 +257,11 @@ def unzip_file(directory, file_list):
     except:
         print("Something went wrong with file unzipping")
 
-# Usuwa pliki ze starymi akcjami 
+
 def delete_old_files():
+    """
+    Usuwa pliki ze starymi akcjami 
+    """
     directory = os.getcwd()+'\\data\\'
     print('Start to delete old files')
     with open('oldstocks.csv', newline='') as file:
@@ -211,8 +282,11 @@ def delete_old_files():
                 os.remove(directory + file)
     print('Old files deleted')    
 
-# Pobiera aktualne dane
+
 def download_week():
+    """
+    Pobiera aktualne dane ze strony bossa.pl
+    """
     url = "https://info.bossa.pl/pub/metastock/mstock/sesjaall/few_last.zip"
     path = os.getcwd()+'\\temp\\'
     try:
@@ -222,19 +296,50 @@ def download_week():
     except:
         print("Something went wrong with dowloading GPW data.")
         
-# Sprawdza czy plik z danym walorem jest w bazie danych
+
 def check_stock(stock):
+    """
+    Sprawdza czy plik z danym walorem jest w bazie danych
+
+    Parameters
+    ----------
+    stock:String
+        Nazwa waloru 
+    """
     conn = engine.connect()
     check = exists(select([stocks]).where(stocks.c.NAME == stock)).select()
     pr = conn.execute(check)
     conn.close()
     return pr.first()[0]
 
-# Aktualizuje bazę danych w zalezności od tego , kiedy miała miejsce ostatnia aktualizacja
-def update_db(): 
+def update_db(get_days=False, number_of_days=False): 
+    """
+    Aktualizuje bazę danych
+
+    Attributes
+    ----------
+    get_days opcja : Boolean, optional 
+        zwraca True albo False w zależności czy różnica między ostatnią datą w bazie danych a obecną datą jest większa od zera
+
+    number_of_days : Boolean, optional
+        pobiera różnicę w datach ostatniej wartości w bazie danych a obecną datą 
+    """
     today_date = datetime.date.today()
     last_date = list(check_last_entry())[0][1]
     diff = today_date - last_date
+    print(today_date.weekday())
+    if number_of_days:
+        if last_date.weekday() == 4 and today_date.weekday() > 4:
+            return 0
+        else:
+            return diff.days
+
+    if get_days:
+        if diff.days > 0 and today_date.weekday() < 5:
+            return True
+        else:
+            return False
+
     if diff.days < 7:
         download_week()
         unzip_file(os.getcwd()+'\\temp\\',['gpw.zip'])
@@ -264,6 +369,14 @@ def update_db():
         print('Baza aktualna')
 
 def search_value(value):
+    """
+    Szuka w bazie danych nazwy waloru sawierającej 
+
+    Parameters
+    ----------
+    value:String
+        watość do wyszukania w bazie danych 
+    """
     conn = engine.connect()
     result = stocks.select().where(stocks.c.NAME.like('{}%'.format(value.upper())))
     data = conn.execute(result)

@@ -16,12 +16,9 @@ stock_list = []
 def index():
     stock_list = database.get_data('stocks')
     if request.method == 'POST':
-        # search_results = request.form.get('search_value')
         selected_result = request.form.get('stock_list_form')
         print(selected_result)
-
-#     database.update_db()
-    return render_template('index.html', stock_list=list(stock_list))
+    return render_template('index.html', stock_list = list(stock_list), update = database.update_db(get_days=True), days_counter = database.update_db(number_of_days=True) )
  
 @app.route('/search' , methods=['GET', 'POST'])        
 def search():
@@ -34,6 +31,10 @@ def search():
                 return json.dumps([{"error": False}])
 
         
+@app.route('/update', methods=['GET','POST'])
+def update():
+        # database.update_db()
+        return "updated"
 
     
 

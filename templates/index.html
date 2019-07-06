@@ -13,9 +13,25 @@
 
 <body>
     <div class="main-container">
-        <div class="header-style">
-            <a href="{{url_for('index')}}">Stock analyzer</a>
+        <div class="header-container">
+                <div class="header-style">
+                        <a href="{{url_for('index')}}">Stock analyzer</a>
+                    </div>
+                    {% if update %}
+                    <form method="POST" action="{{url_for('update')}}"></form>
+                    <div class="update-div">
+                        {% if days_counter > 1 %}
+                            Last update : {{days_counter}} days ago
+                        {% else %}
+                            Last update : {{days_counter}} day ago
+                        {% endif %}
+                    </div>
+                        <div class="search-button update-button" type="submit" id="update-button">Update</div>
+                    </form>
+                    {% endif %}
+ 
         </div>
+
         <form method="POST" action="{{url_for('index')}}">
             <div class="selection-container">
                 <input placeholder="Search" id="search_input">
@@ -31,7 +47,10 @@
         </form>
         <div id="search-response" class="search-container">
         </div>
-        <div class="loader">
+        <div class="loader" id="loader">
+        </div>
+        <div class="content-block-style" id="content-block">
+            Kontent 
         </div>
     </div>
 

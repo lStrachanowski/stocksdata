@@ -1,3 +1,4 @@
+// Wyświetla warości z pola wyszukiwania 
 document.getElementById("search_input").addEventListener('keyup', () => {
     var req = new XMLHttpRequest();
     const data = new FormData()
@@ -35,6 +36,7 @@ document.getElementById("search_input").addEventListener('keyup', () => {
     req.send(data);
 })
 
+// wyświetla komunikaty 
 let addCommunicate = (msg) => {
     var child = document.getElementById("search-response");
     var container = document.createElement("DIV");
@@ -48,3 +50,15 @@ let addCommunicate = (msg) => {
     }, 1750);
 }
 
+document.getElementById('update-button').addEventListener("click", ()=>{
+    var req = new XMLHttpRequest();
+    req.open('POST','/update');
+    document.getElementById("loader").style.display = 'block';
+    document.getElementById("content-block").style.display = 'none';
+    req.onload = ()=>{
+            document.getElementById("loader").style.display = 'none';
+            document.getElementById("content-block").style.display = 'block'; 
+    }
+    req.send();
+
+});
