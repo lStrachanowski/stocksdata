@@ -22,9 +22,14 @@ document.getElementById("search_input").addEventListener('keyup', () => {
                 } else {
                     for (val in json_response) {
                         var container = document.createElement("DIV");
-                        container.innerHTML = json_response[val]["name"];
+                        var aTag = document.createElement("a");
+                        aTag.setAttribute ("href",  json_response[val]["name"]);
+                        aTag.innerHTML = json_response[val]["name"];
+                        container.appendChild(aTag);
+                        container.id = "searchid";
                         container.classList.add("search-result");
                         document.getElementById("search-response").appendChild(container);
+                        
                     }
                 }
             } else {

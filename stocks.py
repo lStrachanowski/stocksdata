@@ -17,7 +17,7 @@ def index():
     stock_list = database.get_data('stocks')
     if request.method == 'POST':
         selected_result = request.form.get('stock_list_form')
-        print(selected_result)
+        return redirect(url_for('stock', stock = selected_result))
     return render_template('index.html', stock_list = list(stock_list), update = database.update_db(get_days=True), days_counter = database.update_db(number_of_days=True) )
  
 @app.route('/search' , methods=['GET', 'POST'])        
@@ -33,10 +33,13 @@ def search():
         
 @app.route('/update', methods=['GET','POST'])
 def update():
-        # database.update_db()
+        database.update_db()
         return "updated"
 
-    
+@app.route('/<stock>', methods = ['GET','POST'])
+def stock(stock):
+        print(stock)
+        return render_template('stocks.html', stock=stock)
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()

@@ -327,7 +327,6 @@ def update_db(get_days=False, number_of_days=False):
     today_date = datetime.date.today()
     last_date = list(check_last_entry())[0][1]
     diff = today_date - last_date
-    print(today_date.weekday())
     if number_of_days:
         if last_date.weekday() == 4 and today_date.weekday() > 4:
             return 0

@@ -10,7 +10,7 @@
 }
 
 a:link{
-    color: rgb(255, 100, 34);
+    color: #0087ca;
     text-decoration: none;
 }
 
@@ -19,7 +19,7 @@ a:visited {
   }
 
 a:hover{
-    color: rgb(164, 62, 18);
+    color: #016495;
 }
 
 .selection-container{
@@ -91,7 +91,7 @@ input{
 }
 
 .search-result{
-    background-color: #e29e30;
+    background-color: #00caa8;
     color: white;
     font-size: 13px;
     padding: 1%;
@@ -103,7 +103,12 @@ input{
 }
 
 .search-result:hover{
-    background-color: #ae3b0d;
+    background-color:#0087ca ;
+}
+
+#searchid a:link{
+    color: #ffffff;
+    text-decoration: none;
 }
 
 .alert{
