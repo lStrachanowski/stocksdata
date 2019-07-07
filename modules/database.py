@@ -149,7 +149,7 @@ def load_stocks_details():
                 stock_low = row[4]
                 stock_close = row[5]
                 stock_volume = row[6]
-                stocks_data.append({"NAME":name,"DATE":datetime_object, "OPEN": float(stock_open),"HIGH": float(stock_high), "LOW": float(stock_close), "CLOSE": float(stock_low), "VOLUME": float(stock_volume)  })
+                stocks_data.append({"NAME":name,"DATE":datetime_object, "OPEN": float(stock_open),"HIGH": float(stock_high), "LOW": float(stock_low), "CLOSE": float(stock_close), "VOLUME": float(stock_volume)  })
             conn = engine.connect()
             conn.execute(day_transactions.insert(), stocks_data)
             conn.close()
@@ -321,13 +321,16 @@ def update_db(get_days=False, number_of_days=False):
     last_date = list(check_last_entry('WIG20'))[0][1]
     diff = today_date - last_date
     if number_of_days:
-        if last_date.weekday() == 4 and today_date.weekday() > 4:
+        if diff.days <= 2 and last_date.weekday() == 4 and today_date.weekday() > 4:
             return 0
         else:
             return diff.days
 
     if get_days:
-        if diff.days > 0 and today_date.weekday() < 5:
+        # if diff.days > 0 and today_date.weekday() < 5:
+        if diff.days > 0 and diff.days <= 2 and today_date.weekday() < 5 :
+            return True
+        elif diff.days > 2:
             return True
         else:
             return False

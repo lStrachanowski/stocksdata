@@ -57,10 +57,6 @@ def stock(stock):
 # database.load_stocks_details()
 
 
-# res = database.get_data_from_db('20180501','20190603','11bit')
-# for r in res:
-#     print(r)
-
 
 
 
