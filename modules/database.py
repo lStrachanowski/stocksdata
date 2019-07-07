@@ -81,7 +81,6 @@ def table_operations(table_name, operation):
         if operation == 'c':
             details_day_transactions.create(engine)
         
-
 def load_stock_data():
     """
     Metoda, która pobiera dane walorów z pliku csv i dodaje je do bazy danych
@@ -94,7 +93,6 @@ def load_stock_data():
         conn = engine.connect()
         conn.execute(stocks.insert(), stocks_data)
         conn.close()
-
 
 def get_data_from_db(from_date,to_date,stock_name):
     """
@@ -117,17 +115,19 @@ def get_data_from_db(from_date,to_date,stock_name):
     conn.close()
     return data 
 
-
-def check_last_entry():
+def check_last_entry(stock):
     """
     Sprawdza datę ostatniego wpisu w bazie danych 
+    Parameters
+    ----------
+    stock:String
+    Nazwa waloru
     """
-    selected = day_transactions.select().where(day_transactions.c.NAME == 'WIG20').order_by(desc(day_transactions.c.DATE)).limit(1)
+    selected = day_transactions.select().where(day_transactions.c.NAME == stock).order_by(desc(day_transactions.c.DATE)).limit(1)
     conn = engine.connect()
     data = conn.execute(selected)
     conn.close()
     return data
-
 
 def load_stocks_details():
     """
@@ -154,7 +154,6 @@ def load_stocks_details():
             conn.execute(day_transactions.insert(), stocks_data)
             conn.close()
 
-
 def add_stock_data(stock):
     """
     Dodaje pozycje o walorze do bazy danych
@@ -173,11 +172,10 @@ def add_stock_data(stock):
     stock_low = stock[4]
     stock_close = stock[5]
     stock_volume = stock[6]
-    stocks_data.append({"NAME":name,"DATE":datetime_object, "OPEN": float(stock_open),"HIGH": float(stock_high), "LOW": float(stock_close), "CLOSE": float(stock_low), "VOLUME": float(stock_volume)  })
+    stocks_data.append({"NAME":name,"DATE":datetime_object, "OPEN": float(stock_open),"HIGH": float(stock_high), "LOW": float(stock_low), "CLOSE": float(stock_close), "VOLUME": float(stock_volume)  })
     conn = engine.connect()
     conn.execute(day_transactions.insert(), stocks_data)
     conn.close()
-
 
 def get_data(value):
     """
@@ -208,7 +206,6 @@ def get_data(value):
         conn.close()
         return results
 
-
 def download_data():
     """
     Pobiera dane end of day ze strony BOŚ
@@ -233,7 +230,6 @@ def download_data():
     except:
         print("Something went wrong with dowloading NewConnect data.")
 
-    
 def unzip_file(directory, file_list):
     """
     Wypakowuje dane z pliku zip I usuwa zbędne pliki 
@@ -256,7 +252,6 @@ def unzip_file(directory, file_list):
                 os.remove(directory + item ) 
     except:
         print("Something went wrong with file unzipping")
-
 
 def delete_old_files():
     """
@@ -282,7 +277,6 @@ def delete_old_files():
                 os.remove(directory + file)
     print('Old files deleted')    
 
-
 def download_week():
     """
     Pobiera aktualne dane ze strony bossa.pl
@@ -295,8 +289,7 @@ def download_week():
             code.write(r.content)
     except:
         print("Something went wrong with dowloading GPW data.")
-        
-
+    
 def check_stock(stock):
     """
     Sprawdza czy plik z danym walorem jest w bazie danych
@@ -325,7 +318,7 @@ def update_db(get_days=False, number_of_days=False):
         pobiera różnicę w datach ostatniej wartości w bazie danych a obecną datą 
     """
     today_date = datetime.date.today()
-    last_date = list(check_last_entry())[0][1]
+    last_date = list(check_last_entry('WIG20'))[0][1]
     diff = today_date - last_date
     if number_of_days:
         if last_date.weekday() == 4 and today_date.weekday() > 4:

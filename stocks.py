@@ -38,8 +38,8 @@ def update():
 
 @app.route('/<stock>', methods = ['GET','POST'])
 def stock(stock):
-        print(stock)
-        return render_template('stocks.html', stock=stock)
+        print(list(database.check_last_entry(stock))[0])
+        return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5] )
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()
