@@ -3,6 +3,7 @@ import os
 # Ścieżka dla importu modułów
 sys.path.append(os.getcwd()+'\\modules\\')
 import database
+import analytics
 import csv
 import json
 from flask import Flask
@@ -38,7 +39,7 @@ def update():
 
 @app.route('/<stock>', methods = ['GET','POST'])
 def stock(stock):
-        print(list(database.check_last_entry(stock))[0])
+        analytics.get_stock_data(stock)
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5] )
 
 # Ładuje dane z csv do bazy danych

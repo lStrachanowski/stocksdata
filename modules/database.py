@@ -94,6 +94,20 @@ def load_stock_data():
         conn.execute(stocks.insert(), stocks_data)
         conn.close()
 
+def get_all_stock_data(stock):
+    """
+    Pobiera wszystkie wartości o danego waloru z bazy danych
+    Parameters:
+    stock: String
+        Nazwa waloru
+    """
+    selected = day_transactions.select().where(day_transactions.c.NAME == stock.upper())
+    conn = engine.connect()
+    data = conn.execute(selected)
+    conn.close()
+    return data
+    
+
 def get_data_from_db(from_date,to_date,stock_name):
     """
     Pobiera z bazy dane o walorze z podanego okresu
@@ -327,7 +341,6 @@ def update_db(get_days=False, number_of_days=False):
             return diff.days
 
     if get_days:
-        # if diff.days > 0 and today_date.weekday() < 5:
         if diff.days > 0 and diff.days <= 2 and today_date.weekday() < 5 :
             return True
         elif diff.days > 2:
