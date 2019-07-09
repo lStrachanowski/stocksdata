@@ -39,7 +39,8 @@ def update():
 
 @app.route('/<stock>', methods = ['GET','POST'])
 def stock(stock):
-        analytics.get_stock_data(stock)
+        df = analytics.get_stock_data(stock)
+        analytics.stock_dates_range(df, '2015-01-22','2016-02-20')
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5] )
 
 # Ładuje dane z csv do bazy danych
