@@ -173,5 +173,28 @@ input{
 }
 
 .content-block-style{
-    display: block;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.stock-style{
+    margin: 0.25% 1%;
+    font-size: 20px;
+    color: #262e85;
+}
+
+.stock-change-up{
+    color:#1bbe02;
+    font-weight: 600;
+}
+
+.stock-change-down{
+    color:#be0202;
+    font-weight: 600;
+}
+
+.stock-change-zero{
+    color:#353535;
+    font-weight: 600;
 }

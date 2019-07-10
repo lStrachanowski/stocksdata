@@ -35,3 +35,17 @@ def stock_dates_range(frame, start,end):
     new_df = pd.DataFrame(index=dates)
     new_df = new_df.join(df).dropna()
     return new_df
+
+def stock_mean_volume(df):
+    """
+    Oblicza średnią wartość dla danej warości
+
+    Parameters
+    ----------
+    df:DataFrame
+    Dataframe z warościami do obliczeń
+
+    Oblicza średni wolumen 
+    """
+    print(df.mean(axis=0))
+

@@ -22,9 +22,22 @@
         <div class="loader" id="loader">
         </div>
         <div class="content-block-style" id="content-block">
-            {{stock}} {{close_price}}
+            <div class="stock-style">
+                {{stock}}
+            </div>
+            <div class="stock-style">
+                {{close_price}}
+            </div>
+            <div class="stock-style" id="stock-change">
+                ({{daily_return}} %)
+            </div>
         </div>
+
     </div>
+
+    </div>
+    </div>
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
 
 </html>

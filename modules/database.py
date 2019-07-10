@@ -325,7 +325,7 @@ def update_db(get_days=False, number_of_days=False):
 
     Attributes
     ----------
-    get_days opcja : Boolean, optional 
+    get_days : Boolean, optional 
         zwraca True albo False w zależności czy różnica między ostatnią datą w bazie danych a obecną datą jest większa od zera
 
     number_of_days : Boolean, optional

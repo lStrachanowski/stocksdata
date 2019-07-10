@@ -40,8 +40,10 @@ def update():
 @app.route('/<stock>', methods = ['GET','POST'])
 def stock(stock):
         df = analytics.get_stock_data(stock)
-        analytics.stock_dates_range(df, '2015-01-22','2016-02-20')
-        return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5] )
+        t_min = df.tail().iloc[-2]['CLOSE']
+        t = df.tail().iloc[-1]['CLOSE']
+        d_return = round(((t/t_min)-1)*100,2)
+        return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return)
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()
