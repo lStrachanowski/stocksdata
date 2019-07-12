@@ -82,6 +82,7 @@ def draw_chart(df, period=False):
         decreasing=dict(line=dict(color='#be0202')),
         name='Candle'
     )
+
     sma_200 = df['CLOSE'].rolling(200).mean()
     sma_50 = df['CLOSE'].rolling(50).mean()
 
@@ -101,6 +102,7 @@ def draw_chart(df, period=False):
         line=dict(
             color=('rgb(56, 148, 153)'),
             width=2,)
+            
     )
 
     volume_bars = go.Bar(
@@ -121,14 +123,19 @@ def draw_chart(df, period=False):
         xaxis=dict(
             rangeslider=dict(
                 visible=False
-            )
+            ),
+            type = "category"
+        ),
+        yaxis=dict(
+            title='Price',
+            side='left'
         ),
         yaxis2=dict(
             title='Volume',
             overlaying='y',
             side='right'
         ),
-        margin={'l': 75, 'r': 75, 't': 10, 'b': 25}
+        margin={'l': 75, 'r': 75, 't': 10, 'b': 80}
     )
     data = [trace_candle, trace_sma200, trace_sma50, volume_bars]
     fig = go.Figure(data=data, layout=layout)
