@@ -72,6 +72,7 @@ def draw_chart(df, period=False):
     period : Integer, optional
         Zakres w dniach , na jaki ma zostać narysowany wykres
     """
+    # Wykres świecowy 
     trace_candle = go.Candlestick(
         x=df[-period:].index,
         open=df['OPEN'][-period:],
@@ -80,12 +81,14 @@ def draw_chart(df, period=False):
         close=df['CLOSE'][-period:],
         increasing=dict(line=dict(color='#1bbe02')),
         decreasing=dict(line=dict(color='#be0202')),
-        name='Candle'
+        name='Candle',
+        hoverinfo='none'
     )
 
     sma_200 = df['CLOSE'].rolling(200).mean()
     sma_50 = df['CLOSE'].rolling(50).mean()
 
+    # Sma 200
     trace_sma200 = go.Scatter(
         x=df.index[-period:],
         y=sma_200[-period:],
@@ -95,16 +98,17 @@ def draw_chart(df, period=False):
             width=2,)
     )
 
+    # Sma 50
     trace_sma50 = go.Scatter(
         x=df.index[-period:],
         y=sma_50[-period:],
         name='SMA 50',
         line=dict(
             color=('rgb(56, 148, 153)'),
-            width=2,)
-            
+            width=2,)   
     )
 
+    # Volumen
     volume_bars = go.Bar(
         x=df.index[-period:],
         y=df['VOLUME'][-period:],
@@ -117,6 +121,40 @@ def draw_chart(df, period=False):
         opacity=0.2,
         yaxis='y2',
         name='volume'
+    )
+
+    # Bollinger bands
+    sma_65 = df['CLOSE'].rolling(65).mean()
+    sma_65_std = df['CLOSE'].rolling(65).std()
+    boll_up = sma_65 + (2 * sma_65_std)
+    boll_down = sma_65 - (2 * sma_65_std)
+
+    boll_65 = go.Scatter(
+        x=df.index[-period:],
+        y=sma_65[-period:],
+        name='SMA 65',
+        line=dict(
+            color=('rgba(209, 181, 185, 0.5)'),
+            width=2,),
+            hoverinfo='none'
+    )
+
+    boll_65_down = go.Scatter(
+        x=df.index[-period:],
+        y=boll_down[-period:],
+        name='Bollinger down',
+        line=dict(
+            color=('rgba(209, 181, 185, 0.5)'),
+            width=2,)   
+    )
+
+    boll_65_up = go.Scatter(
+        x=df.index[-period:],
+        y=boll_up[-period:],
+        name='Bollinger up',
+        line=dict(
+            color=('rgba(209, 181, 185, 0.5)'),
+            width=2,)   
     )
 
     layout = go.Layout(
@@ -137,7 +175,7 @@ def draw_chart(df, period=False):
         ),
         margin={'l': 75, 'r': 75, 't': 10, 'b': 80}
     )
-    data = [trace_candle, trace_sma200, trace_sma50, volume_bars]
+    data = [trace_candle, trace_sma200, trace_sma50, volume_bars,boll_65, boll_65_down, boll_65_up]
     fig = go.Figure(data=data, layout=layout)
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
