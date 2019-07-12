@@ -43,7 +43,6 @@ if (document.getElementById("search_input")) {
     })
 }
 
-
 // wyświetla komunikaty 
 let addCommunicate = (msg) => {
     var child = document.getElementById("search-response");
@@ -58,6 +57,7 @@ let addCommunicate = (msg) => {
     }, 1750);
 }
 
+// Aktualizacja bazy danych
 if (document.getElementById('update-button')) {
     document.getElementById('update-button').addEventListener("click", () => {
         var req = new XMLHttpRequest();
@@ -74,6 +74,7 @@ if (document.getElementById('update-button')) {
 
 }
 
+// W zależności od wartości dodaje kolor do elementu z procentowym dziennym zwrotem z inwestycji 
 if (document.getElementById('stock-change')) {
     let gain = document.getElementById('stock-change').innerHTML;
     let number = parseFloat(gain.trim().split(" ")[0].substr(1));

@@ -198,3 +198,11 @@ input{
     color:#353535;
     font-weight: 600;
 }
+
+.chart{
+    text-align: center;
+    height: 700px;
+}
+.modebar {
+    display: none !important;
+}
