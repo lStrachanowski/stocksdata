@@ -58,7 +58,7 @@ def stock_mean_volume(df):
     return df.mean(axis=0)
 
 
-def draw_chart(df):
+def draw_chart(df, period=False):
     """
     rysuje wykres 
 
@@ -67,25 +67,70 @@ def draw_chart(df):
     df:DataFrame
     DataFrame z wartościami dla danego waloru 
 
+    Attributes
+    ----------
+    period : Integer, optional
+        Zakres w dniach , na jaki ma zostać narysowany wykres
     """
-    trace = go.Candlestick(
-        x=df.index,
-        open=df['OPEN'],
-        high=df['HIGH'],
-        low=df['LOW'],
-        close=df['CLOSE'],
+    trace_candle = go.Candlestick(
+        x=df[-period:].index,
+        open=df['OPEN'][-period:],
+        high=df['HIGH'][-period:],
+        low=df['LOW'][-period:],
+        close=df['CLOSE'][-period:],
         increasing=dict(line=dict(color='#1bbe02')),
-        decreasing=dict(line=dict(color='#be0202'))
+        decreasing=dict(line=dict(color='#be0202')),
+        name='Candle'
     )
+    sma_200 = df['CLOSE'].rolling(200).mean()
+    sma_50 = df['CLOSE'].rolling(50).mean()
+
+    trace_sma200 = go.Scatter(
+        x=df.index[-period:],
+        y=sma_200[-period:],
+        name='SMA 200',
+        line=dict(
+            color=('rgb(255, 155, 74)'),
+            width=2,)
+    )
+
+    trace_sma50 = go.Scatter(
+        x=df.index[-period:],
+        y=sma_50[-period:],
+        name='SMA 50',
+        line=dict(
+            color=('rgb(56, 148, 153)'),
+            width=2,)
+    )
+
+    volume_bars = go.Bar(
+        x=df.index[-period:],
+        y=df['VOLUME'][-period:],
+        marker=dict(
+            color='rgb(158,202,225)',
+            line=dict(
+                color='rgb(8,48,107)',
+                width=0.5),
+        ),
+        opacity=0.2,
+        yaxis='y2',
+        name='volume'
+    )
+
     layout = go.Layout(
         xaxis=dict(
             rangeslider=dict(
                 visible=False
             )
         ),
+        yaxis2=dict(
+            title='Volume',
+            overlaying='y',
+            side='right'
+        ),
         margin={'l': 75, 'r': 75, 't': 10, 'b': 25}
     )
-    data = [trace]
-    fig = go.Figure(data=data,layout=layout)
+    data = [trace_candle, trace_sma200, trace_sma50, volume_bars]
+    fig = go.Figure(data=data, layout=layout)
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON

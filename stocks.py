@@ -45,7 +45,7 @@ def stock(stock):
         t = df.tail().iloc[-1]['CLOSE']
         d_return = round(((t/t_min)-1)*100,2)
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
-        graphJSON=analytics.draw_chart(df[-120:]))
+        graphJSON=analytics.draw_chart(df, 120))
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()
