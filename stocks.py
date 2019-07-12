@@ -4,6 +4,7 @@ import os
 sys.path.append(os.getcwd()+'\\modules\\')
 import database
 import analytics
+import scraping
 import csv
 import json
 from flask import Flask
@@ -39,13 +40,12 @@ def update():
 
 @app.route('/<stock>', methods = ['GET','POST'])
 def stock(stock):
-        
         df = analytics.get_stock_data(stock)
         t_min = df.tail().iloc[-2]['CLOSE']
         t = df.tail().iloc[-1]['CLOSE']
         d_return = round(((t/t_min)-1)*100,2)
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
-        graphJSON=analytics.draw_chart(df, 120))
+        graphJSON=analytics.draw_chart(df, 180), company_details = scraping.company_info(database.get_stock_marks(stock, ticker=True)))
 
 # Ładuje dane z csv do bazy danych
 # database.load_stock_data()

@@ -26,13 +26,30 @@
                 {{stock}}
             </div>
             <div class="stock-style">
-                {{close_price}}
+                {{close_price}} PLN
             </div>
             <div class="stock-style" id="stock-change">
                 ({{daily_return}} %)
             </div>
         </div>
         <div id="chart" class="chart">
+        </div>
+        <div class="section-header">
+            Opis firmy
+        </div>
+        <div class="company-details">
+            <div class="company-details-left">
+                    {% for detail in company_details[:7] %}
+                    <div>{{detail}}</div>
+                    {% endfor %}
+
+            </div>
+            <div class="company-details-right">
+                    {% for detail in company_details[7:] %}
+                    <div>{{detail}}</div>
+                    {% endfor %}
+            </div>
+           
         </div>
     </div>
     <script src="{{url_for('static', filename='js/script.js')}}"></script>

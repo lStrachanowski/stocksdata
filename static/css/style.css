@@ -206,3 +206,25 @@ input{
 .modebar {
     display: none !important;
 }
+
+.company-details{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    
+}
+.company-details-left{
+    width: 20%;
+    margin: 0% 1% 1% 1%;
+}
+.company-details-right{
+    width: 80%;
+    margin: 0% 5% 1% 1%;
+    text-align: left;
+}
+
+.section-header{
+    margin: 1%;
+    color: #0087ca;
+    font-size: 1.5em;
+}

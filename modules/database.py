@@ -107,7 +107,6 @@ def get_all_stock_data(stock):
     conn.close()
     return data
     
-
 def get_data_from_db(from_date,to_date,stock_name):
     """
     Pobiera z bazy dane o walorze z podanego okresu
@@ -190,6 +189,32 @@ def add_stock_data(stock):
     conn = engine.connect()
     conn.execute(day_transactions.insert(), stocks_data)
     conn.close()
+
+def get_stock_marks(stock,isin=False,ticker=False):
+    """
+    Zwraca ISIN lub TICKER dla danego waloru
+
+    Attributes
+    ----------
+    isin : Boolean, optional 
+        Zwraca ISIN waloru 
+    
+    ticker: Boolean, optinal
+        Zwraca TICKER dla danego waloru
+
+    Parameters
+    ----------
+    stock:String
+        Nazwa waloru 
+    """
+    conn = engine.connect()
+    result = stocks.select().where(stocks.c.NAME == stock.upper())
+    data = conn.execute(result)
+    conn.close()
+    if isin:
+        return list(data)[0][2]
+    if ticker:
+        return list(data)[0][0]
 
 def get_data(value):
     """
@@ -378,7 +403,7 @@ def update_db(get_days=False, number_of_days=False):
 
 def search_value(value):
     """
-    Szuka w bazie danych nazwy waloru sawierającej 
+    Szuka w bazie danych nazwy waloru zawierającej parametr value
 
     Parameters
     ----------
