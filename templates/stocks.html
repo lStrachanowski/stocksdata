@@ -37,7 +37,7 @@
         <div class="section-header">
             Opis firmy
         </div>
-        <div class="company-details">
+        <div class="company-details" id="description">
             <div class="company-details-left">
                     {% for detail in company_details[:7] %}
                     <div>{{detail}}</div>
@@ -50,6 +50,21 @@
                     {% endfor %}
             </div>
            
+        </div>
+        <div class="section-header">
+                Wskaźniki
+        </div>
+        <div class="company-details indicators" id="indicators">
+            {% for indicator in indicators %}
+                <div class="indicator-container">
+                    <div>
+                            {{indicator[0]}}
+                    </div>
+                    <div>
+                            {{indicator[1]}}
+                    </div>
+                </div>
+            {% endfor%}
         </div>
     </div>
     <script src="{{url_for('static', filename='js/script.js')}}"></script>

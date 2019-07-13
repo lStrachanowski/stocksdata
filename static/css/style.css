@@ -216,15 +216,29 @@ input{
 .company-details-left{
     width: 20%;
     margin: 0% 1% 1% 1%;
+    font-size: 13px;
 }
 .company-details-right{
     width: 80%;
     margin: 0% 5% 1% 1%;
     text-align: left;
+    font-size: 13px;
 }
 
 .section-header{
     margin: 1%;
     color: #0087ca;
     font-size: 1.5em;
+}
+
+.indicators{
+    flex-wrap:  wrap;
+    justify-content: center;
+    align-items: center;
+}
+.indicator-container{
+    width:8%;
+    background-color: #d4e2f7;
+    margin: 0.25%;
+    padding: 0.75% 1%;
 }
