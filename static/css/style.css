@@ -242,3 +242,39 @@ input{
     margin: 0.25%;
     padding: 0.75% 1%;
 }
+
+.header-width{
+    width: 50%;
+}
+
+.double-container{
+    display: flex;
+    flex-direction: row;
+    margin-top: 1.5%;
+}
+
+.news-item{
+    display: flex;
+    flex-direction: row;
+    margin: 1.5%;
+    padding: 15px;
+    background-color: #f3f6fa;
+    justify-content: center;
+}
+
+#news a:link{
+    color: #000000;
+}
+
+#news .link-select{
+    min-width: 70%;
+    padding: 0px 10px;
+}
+
+#news a:hover{
+    color: #0087ca;
+}
+
+#news [class*="news-select"]{
+    min-width: 10%;
+}

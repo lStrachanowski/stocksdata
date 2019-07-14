@@ -39,33 +39,66 @@
         </div>
         <div class="company-details" id="description">
             <div class="company-details-left">
-                    {% for detail in company_details[:7] %}
-                    <div>{{detail}}</div>
-                    {% endfor %}
+                {% for detail in company_details[:-1] %}
+                <div>{{detail}}</div>
+                {% endfor %}
 
             </div>
             <div class="company-details-right">
-                    {% for detail in company_details[7:] %}
-                    <div>{{detail}}</div>
-                    {% endfor %}
+                {% for detail in company_details[-1:] %}
+                <div>{{detail}}</div>
+                {% endfor %}
             </div>
-           
+
         </div>
         <div class="section-header">
-                Wskaźniki
+            Wskaźniki
         </div>
         <div class="company-details indicators" id="indicators">
             {% for indicator in indicators %}
-                <div class="indicator-container">
-                    <div>
-                            {{indicator[0]}}
-                    </div>
-                    <div>
-                            {{indicator[1]}}
-                    </div>
+            <div class="indicator-container">
+                <div>
+                    {{indicator[0]}}
                 </div>
+                <div>
+                    {{indicator[1]}}
+                </div>
+            </div>
             {% endfor%}
         </div>
+        <div class="double-container">
+            <div class="header-width">
+                <div class="section-header">
+                    Wiadomości
+                </div>
+                <div>
+                    {% for item in news%}
+                    <div class="news-item" id="news">
+                        <div class="news-select">
+                            {{item[0]}}
+                        </div>
+                        <div class="link-select">
+                            <a href="{{item[2]}}">{{item[1]}} </a>
+                        </div>
+                        <div class="news-select">
+                            {{item[3]}}
+                        </div>
+                        <div class="news-select">
+                            {{item[4]}}
+                        </div>
+                    </div>
+                    {% endfor%}
+                </div>
+
+            </div>
+            <div class="header-width">
+                <div class="section-header">
+                    Finanse
+                </div>
+            </div>
+        </div>
+
+
     </div>
     <script src="{{url_for('static', filename='js/script.js')}}"></script>
     <!-- Plotly.js -->
@@ -75,7 +108,7 @@
 
         var graphs = {{ graphJSON | safe}};
 
-        Plotly.plot('chart', graphs,  {displayModeBar: false});
+        Plotly.plot('chart', graphs, { displayModeBar: false });
 
     </script>
 </body>

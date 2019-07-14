@@ -18,16 +18,13 @@ def company_info(stock_ticker):
             table = soup.find('font', id='f13')
             company_details = []
             company_details.append(full_company_name.getText())
-            table_converted =list(table)
-            company_details.append(table_converted[0])
-            company_details.append(table_converted[2])
-            company_details.append(table_converted[4])
-            company_details.append(table_converted[6])
-            for i in enumerate(table_converted[9]):
-                company_details.append(i[1])
-            for j in enumerate(table_converted[12]):
-                company_details.append(j[1])
-            company_details.append(table_converted[21])
+            for v in table:
+                if len(v) > 1:
+                    company_details.append(v)
+            del company_details[-3:-1]
+            links = table.find_all('a')
+            for l in links[:2]:
+                company_details.insert(-1,l.getText())
             return company_details
 
 def company_indicators(stock_ticker):
@@ -64,4 +61,28 @@ def company_indicators(stock_ticker):
                 company_data.append(['C/Z','N.A'])
             return company_data
 
-
+def get_news(isin):
+    """
+    Pobiera komunikaty o danej spółce
+    Parameters
+    ----------
+    isin:String
+        Isin dla danego waloru.
+    """
+    base_url = r'https://www.money.pl/gielda/spolki-gpw/'
+    if isin:
+        page = requests.get(base_url+isin+',emitent,1.html')
+        if page.status_code == 200:
+            soup = BeautifulSoup(page.content, 'html.parser')
+            table = soup.find_all('tr', {"class":'npeb8d-3'})
+            news = []
+            for val in table:
+                td = val.find_all('td')
+                data = []
+                for v in td:
+                    data.append(v.getText())
+                    if v.find('a'):
+                        link = r'https://www.money.pl' + v.find('a')['href']
+                        data.append(link)
+                news.append(data)
+            return news[1:10:]
