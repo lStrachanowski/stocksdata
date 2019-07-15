@@ -53,7 +53,10 @@ def stock(stock):
         indicators = indicators,news = news)
 
 
-# Ładuje dane z csv do bazy danych
+
+# database.table_operations('stocks','c')
+
+# Laduje dane z csv do bazy danych
 # database.load_stock_data()
 
 # Pobiera dane o walorach z internetu     
@@ -67,8 +70,6 @@ def stock(stock):
 
 # Inicjuje dane o dziennych zmianach w bazie danych 
 # database.load_stocks_details()
-
-
 
 
 

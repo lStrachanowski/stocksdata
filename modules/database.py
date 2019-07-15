@@ -81,10 +81,36 @@ def table_operations(table_name, operation):
         if operation == 'c':
             details_day_transactions.create(engine)
         
-def load_stock_data():
+def load_stock_data(remove_old=False):
     """
     Metoda, która pobiera dane walorów z pliku csv i dodaje je do bazy danych
+     Attributes
+    ----------
+    period : Boolean, optional
+        Opcjonalne sprawdzanie i usówanie starych walorów z pliku csv, na podstawie , którego tworzone są wpisy w bazie danych. 
     """
+    if remove_old:
+        results = []
+        full_data = []
+        with open(os.getcwd()+'\\stock_tickers.csv' ,newline='', mode='r') as csv_file:
+            csv_data = csv.reader(csv_file, delimiter=';')
+            for item in csv_data:
+                results.append(item[0])
+                full_data.append(item)
+        with open (os.getcwd()+ '\\oldstocks.csv', newline='',mode='r') as old_csv:
+            old_csv_data = csv.reader(old_csv, delimiter=';')
+            for v in old_csv_data:
+                try:
+                    if(v[0][:-4] in results):
+                        del results[results.index(v[0][:-4])] 
+                except:
+                    print(v)
+        with open('stock_tickers.csv', mode='w',newline="") as c_f:
+            ew = csv.writer(c_f, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            for val in full_data:
+                if val[0] in results:
+                    ew.writerow(val)          
+               
     with open(os.getcwd()+'\\stock_tickers.csv' ,newline='', mode='r') as csv_file:
         csv_data = csv.reader(csv_file, delimiter=';')
         stocks_data = []
