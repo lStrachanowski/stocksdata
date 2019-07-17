@@ -47,10 +47,13 @@ def stock(stock):
         info = scraping.company_info(database.get_stock_marks(stock, ticker=True))
         indicators = scraping.company_indicators(database.get_stock_marks(stock, ticker=True))
         news = scraping.get_news(database.get_stock_marks(stock, isin=True))
+        financial_data = scraping.get_financial_data(database.get_stock_marks(stock, isin=True))
+        for v in financial_data[1]:
+                print(v)
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
         graphJSON=analytics.draw_chart(df, 180), 
         company_details = info,
-        indicators = indicators,news = news)
+        indicators = indicators,news = news,finance = financial_data)
 
 
 

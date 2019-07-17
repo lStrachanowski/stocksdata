@@ -95,7 +95,40 @@
                 <div class="section-header">
                     Finanse
                 </div>
+                <div class="finance-table">
+                    {% for item in finance[0][0:5] %}
+                    <div class="finance-item  year-font">
+                        {{ item }}
+                    </div>
+                    {% endfor%}
+                </div>
+                {% for item in finance[1] %}
+                {% for value in item %}
+
+
+                <div class="finance-data">
+                    <div class="finance-item finanace-item-info">
+                        {{value[0]}}
+                    </div>
+                    {% for amount in value[1]%}
+                    {% if amount %}
+                    <div class="finance-item">
+                        {{amount}}
+                    </div>
+                    {%endif%}
+                    {%endfor%}
+                </div>
+                {%endfor%}
+                {% endfor %}
+                <div class="finance-table">
+                        {% for item in finance[0][5:] %}
+                        <div class="finance-item  year-font">
+                            {{ item }}
+                        </div>
+                        {% endfor%}
+                    </div>
             </div>
+
         </div>
 
 
