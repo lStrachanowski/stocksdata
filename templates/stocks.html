@@ -54,6 +54,7 @@
         <div class="section-header">
             Wskaźniki
         </div>
+        <!-- Tabela ze wskaźnikami -->
         <div class="company-details indicators" id="indicators">
             {% for indicator in indicators %}
             <div class="indicator-container">
@@ -67,30 +68,84 @@
             {% endfor%}
         </div>
         <div class="double-container">
-            <div class="header-width">
-                <div class="section-header">
-                    Wiadomości
-                </div>
-                <div>
-                    {% for item in news%}
-                    <div class="news-item" id="news">
-                        <div class="news-select">
-                            {{item[0]}}
-                        </div>
-                        <div class="link-select">
-                            <a href="{{item[2]}}">{{item[1]}} </a>
-                        </div>
-                        <div class="news-select">
-                            {{item[3]}}
-                        </div>
-                        <div class="news-select">
-                            {{item[4]}}
-                        </div>
+            <div>
+                <!-- Tabela z wiadomościami  -->
+                <div class="header-width">
+                    <div class="section-header">
+                        Wiadomości
                     </div>
-                    {% endfor%}
+                    <div>
+                        {% for item in news%}
+                        <div class="news-item" id="news">
+                            <div class="news-select">
+                                {{item[0]}}
+                            </div>
+                            <div class="link-select">
+                                <a href="{{item[2]}}">{{item[1]}} </a>
+                            </div>
+                            <div class="news-select">
+                                {{item[3]}}
+                            </div>
+                            <div class="news-select">
+                                {{item[4]}}
+                            </div>
+                        </div>
+                        {% endfor%}
+                    </div>
+
                 </div>
 
+                <!-- Arkusz zleceń  -->
+                <div class="header-width">
+                    <div class="section-header">
+                        Arkusz zleceń
+                    </div>
+                    <div class="double-container">
+                        <div class="order_book order-book-color">
+                            <div class="order-container">
+                                <div class="order-container-item">Kurs</div>
+                                <div class="order-container-item">Wolumen</div>
+                                <div class="order-container-item">Wartość</div>
+                                <div class="order-container-item">Ilość</div>
+                                <div class="order-container-item">%</div>
+                            </div>
+                            {% for value in order_book[0] %}
+                            <div class="order-container">
+                                <div class="order-container-item news-item-bold">{{value[0]}}</div>
+                                <div class="order-container-item">{{value[1]}}</div>
+                                <div class="order-container-item">{{value[2]}}</div>
+                                <div class="order-container-item">{{value[3]}}</div>
+                                <div class="order-container-item">{{value[4]}}</div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                        <div class="order_book order-book-color">
+                            <div class="order-container">
+                                <div class="order-container-item">Kurs</div>
+                                <div class="order-container-item">Wolumen</div>
+                                <div class="order-container-item">Wartość</div>
+                                <div class="order-container-item">Ilość</div>
+                                <div class="order-container-item">%</div>
+                            </div>
+                            {% for value in order_book[1] %}
+                            <div class="order-container">
+                                <div class="order-container-item news-item-bold">{{value[0]}}</div>
+                                <div class="order-container-item">{{value[1]}}</div>
+                                <div class="order-container-item">{{value[2]}}</div>
+                                <div class="order-container-item">{{value[3]}}</div>
+                                <div class="order-container-item">{{value[4]}}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <img src="https://stooq.pl/q/h/c/?s={{ticker}}">
             </div>
+
+
+            <!-- Tabela z danymi finansowymi  -->
             <div class="header-width">
                 <div class="section-header">
                     Finanse
@@ -121,16 +176,85 @@
                 {%endfor%}
                 {% endfor %}
                 <div class="finance-table">
-                        {% for item in finance[0][5:] %}
-                        <div class="finance-item  year-font">
-                            {{ item }}
-                        </div>
-                        {% endfor%}
+                    {% for item in finance[0][5:] %}
+                    <div class="finance-item  year-font">
+                        {{ item }}
                     </div>
+                    {% endfor%}
+                </div>
             </div>
-
+            
         </div>
-
+        <!-- Akcjonariat -->
+        <div class="section-header">
+            Akcjonariat
+        </div>
+        <div class="shareholders-container">
+            <div class="shareholders-item">
+                Lp
+            </div>
+            <div class="shareholders-item">
+                Akcjonariusz
+            </div>
+            <div class="shareholders-item">
+                Udział w kapitale
+            </div>
+            <div class="shareholders-item">
+                Liczba akcji
+            </div>
+            <div class="shareholders-item">
+                Ostatnia zmiana
+            </div>
+            <div class="shareholders-item">
+                Wartość rynkowa (PLN)
+            </div>
+            <div class="shareholders-item">
+                Udział na WZA
+            </div>
+            <div class="shareholders-item">
+                Liczba głosów
+            </div>
+            <div class="shareholders-item">
+                Ostatnia zmiana
+            </div>
+            <div class="shareholders-item">
+                Data aktualizacji
+            </div>
+        </div>
+        {% for shareholder in shareholders %}
+        <div class="shareholders-container">
+                <div class="shareholders-item shareholders-item-samll">
+                    {{shareholder[0]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[1]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[2]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[3]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[4]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[5]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[6]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[7]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[8]}}
+                </div>
+                <div class="shareholders-item">
+                        {{shareholder[9]}}
+                </div>
+            </div>
+            {% endfor %}
 
     </div>
     <script src="{{url_for('static', filename='js/script.js')}}"></script>

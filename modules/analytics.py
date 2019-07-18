@@ -6,7 +6,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import numpy as np
 import json
-
+import decimal
 
 def get_stock_data(stock):
     """
@@ -179,3 +179,19 @@ def draw_chart(df, period=False):
     fig = go.Figure(data=data, layout=layout)
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
+
+def daily_retun(stock,days):
+    """
+    Zwraca dzienne zmiany waloru dla podanego okresu
+    Parameters
+    ----------
+    stock:String
+        Nazwa waloru
+    days:Integer
+        Liczba dni
+    """
+    data = get_stock_data(stock)[-days:]
+    t_min = data.shift()
+    result = (data['CLOSE']/t_min['CLOSE'] -1)* 100
+    result.iloc[0] = 0
+    return result.astype('float').round(2)

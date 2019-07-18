@@ -44,16 +44,19 @@ def stock(stock):
         t_min = df.tail().iloc[-2]['CLOSE']
         t = df.tail().iloc[-1]['CLOSE']
         d_return = round(((t/t_min)-1)*100,2)
-        info = scraping.company_info(database.get_stock_marks(stock, ticker=True))
-        indicators = scraping.company_indicators(database.get_stock_marks(stock, ticker=True))
-        news = scraping.get_news(database.get_stock_marks(stock, isin=True))
-        financial_data = scraping.get_financial_data(database.get_stock_marks(stock, isin=True))
-        for v in financial_data[1]:
-                print(v)
+        ticker = database.get_stock_marks(stock, ticker=True)
+        isin = database.get_stock_marks(stock, isin=True)
+        info = scraping.company_info(ticker)
+        indicators = scraping.company_indicators(ticker)
+        news = scraping.get_news(isin)
+        financial_data = scraping.get_financial_data(isin)
+        order_book = scraping.order_book(ticker)
+        shareholders = scraping.get_shareholders(ticker)
+        analytics.daily_retun(stock, 60)
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
         graphJSON=analytics.draw_chart(df, 180), 
         company_details = info,
-        indicators = indicators,news = news,finance = financial_data)
+        indicators = indicators,news = news,finance = financial_data, order_book = order_book, shareholders = shareholders, ticker = ticker)
 
 
 

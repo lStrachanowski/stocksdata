@@ -124,4 +124,77 @@ def get_financial_data(isin):
                     all_data_table.append(financial_data_item)
                 financial_data.append(all_data_table)
             return financial_years, financial_data
-            
+
+
+def order_book(ticker):
+    """
+    Pobiera dziesięć zleceń kupna i sprzedaży na podstawie tickera danych akcji 
+    Parameters
+    ----------
+    ticker:String
+        Ticker dla danego waloru.
+    """
+    base_url = r'https://gragieldowa.pl/spolka_arkusz_zl/spolka/'
+    if ticker:
+        page = requests.get(base_url+ticker)
+        if page.status_code == 200:
+            soup = BeautifulSoup(page.content, 'html.parser')
+            table = soup.find_all('tr')
+            headers = []
+            buy = []
+            sell = []
+            for i in range(4,len(table)-29):
+                if table[i].find('th'):
+                    headers.append(i)
+            if headers:
+                for val_buy in range(headers[0]+1,headers[1]):
+                    buy_row_member = []
+                    buy_row_member.append(table[val_buy].find('td').string)
+                    sibling = (table[val_buy].find('td').next_siblings)
+                    for s in sibling:
+                        buy_row_member.append(s.string)
+                    buy.append(buy_row_member)
+                for val_sell in range(headers[1]+1,len(table)-29):
+                    sell_row_member = []
+                    sell_row_member.append(table[val_sell].find('td').string)
+                    sibling = (table[val_sell].find('td').next_siblings)
+                    for s in sibling:
+                        sell_row_member.append(s.string)
+                    sell.append(sell_row_member)  
+                if len(buy) < 11:
+                    buy = buy[:len(buy)-1]
+                else:
+                    buy = buy[0:10]
+                if len(sell) < 11:
+                    sell = sell[:len(sell)-1]
+                else:
+                    sell = sell[0:10]
+                return (buy, sell)
+            else:
+                return ([0], [0])
+        else:
+            print('something went wrong with book order scrapping')
+
+
+def get_shareholders(stock_ticker):
+    """
+    Pobiera dane o akcjonariacie
+    Parameters
+    ----------
+    stock_ticker:String
+        Ticker dla danego waloru.
+    """
+    base_url = r'https://stooq.pl/q/h/?s='
+    if stock_ticker:
+        page = requests.get(base_url+stock_ticker)
+        rows_data = []
+        if page.status_code == 200:
+            soup = BeautifulSoup(page.content, 'html.parser')
+            table = soup.find_all('table',class_="fth1")
+            rows = table[0].find_all('tr',id='r')
+            for v in rows:
+                row_values = []
+                for item in v.findChildren('td'):
+                    row_values.append(item.getText())
+                rows_data.append(row_values)
+        return rows_data

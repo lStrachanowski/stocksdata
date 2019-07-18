@@ -226,7 +226,7 @@ input{
 }
 
 .section-header{
-    margin: 1%;
+    margin: 2% 1%;
     color: #0087ca;
     font-size: 1.5em;
 }
@@ -244,8 +244,13 @@ input{
 }
 
 .header-width{
-    width: 50%;
+    width: 100%;
     margin: 1%;
+}
+
+.order_book{
+    min-width: 46%;
+    margin: 2%;
 }
 
 .double-container{
@@ -254,6 +259,24 @@ input{
     margin-top: 1.5%;
 }
 
+.order-container{
+    display: flex;
+    flex-direction: row;
+    margin: 3% 1%;
+    padding: 2%;
+    font-size: 14px;
+}
+
+.order-container:hover{
+    background-color: #b6cdea;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.order-container-item{
+    min-width: 20%;
+    align-content: center;
+}
 .news-item{
     display: flex;
     flex-direction: row;
@@ -262,6 +285,17 @@ input{
     background-color: #f3f6fa;
     justify-content: center;
 }
+
+.news-item-bold{
+    font-weight: 600;
+    color: #0087ca;
+    cursor: pointer;
+}
+
+.order-book-color{
+    background-color: #f3f6fa;
+}
+
 
 #news a:link{
     color: #000000;
@@ -302,6 +336,7 @@ input{
 .finance-data:hover{
     background-color: #b6cdea;
     font-weight: 600;
+    cursor: pointer;
 }
 .finance-item{
     min-width: 20%;
@@ -316,4 +351,28 @@ input{
     margin: 1% 0% 1% 2%;
     align-items: center;
     text-align: left;
+}
+
+.shareholders-container{
+    display: flex;
+    flex-direction: row;
+    padding: 0.5% 0.25%;
+    align-items: center;
+}
+
+
+.shareholders-container:nth-child(even){
+    background-color: #f3f6fa;
+}
+
+.shareholders-item{
+    min-width: 10%;
+}
+.shareholders-item-samll{
+    width: 2%;
+}
+
+.shareholders-container:hover{
+    background-color: #e2e2e2;
+    cursor: pointer;
 }
