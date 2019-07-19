@@ -250,7 +250,11 @@ def draw_daily_returns_histogram(df, period):
     layout = go.Layout(
          margin={'l': 75, 'r': 75, 't': 10, 'b': 30},
          width=600,
-         height=350
+         height=350,
+         xaxis=dict(
+         tick0=0,
+         dtick=2.0,
+        ),bargap=0.1
     )
     fig = go.Figure(data=[go.Histogram(x=x)], layout = layout)
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
