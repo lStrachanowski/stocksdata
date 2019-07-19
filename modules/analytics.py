@@ -23,7 +23,6 @@ def get_stock_data(stock):
     df.set_index('DATE', inplace=True)
     return df.sort_values(by=['DATE'])
 
-
 def stock_dates_range(frame, start, end):
     """
     Zwraca wartość z danego DataFrame , między dwoma podanymi datami.
@@ -44,20 +43,17 @@ def stock_dates_range(frame, start, end):
     new_df = new_df.join(df).dropna()
     return new_df
 
-
 def stock_mean_volume(df):
     """
-    Oblicza średnią wartość dla danej warości
+    Oblicza średnią dla danego zakresu warości
 
     Parameters
     ----------
     df:DataFrame
     Dataframe z warościami do obliczeń
 
-    Oblicza średni wolumen 
     """
     return df.mean(axis=0)
-
 
 def draw_chart(df, period=False):
     """
@@ -201,7 +197,6 @@ def draw_chart(df, period=False):
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
-
 def draw_daily_returns(df, period):
     """
     Rysuje wykres dziennych stop zwrotu
@@ -211,8 +206,6 @@ def draw_daily_returns(df, period):
     df:DataFrame
     DataFrame z wartościami dla danego waloru 
 
-    Attributes
-    ----------
     period : Integer
         Zakres w dniach , na jaki ma zostać narysowany wykres
     """
@@ -240,8 +233,6 @@ def draw_daily_returns_histogram(df, period):
     df:DataFrame
     DataFrame z wartościami dla danego waloru 
 
-    Attributes
-    ----------
     period : Integer
         Zakres w dniach , na jaki ma zostać narysowany wykres
     """
@@ -260,8 +251,6 @@ def draw_daily_returns_histogram(df, period):
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
-
-
 def daily_retun(stock, days):
     """
     Zwraca dzienne zmiany waloru dla podanego okresu
@@ -277,3 +266,44 @@ def daily_retun(stock, days):
     result = (data['CLOSE']/t_min['CLOSE'] - 1) * 100
     result.iloc[0] = 0
     return result.astype('float').round(2)
+
+def volume_mean(stock, days, period):
+    """
+    Zwraca średnią kroczącą wolumenu. 
+    Parameters
+    ----------
+    stock:String
+        Nazwa waloru
+    days:Integer
+        Średnia krocząca z ppodanej liczby dni
+    period:Integer
+        Zakres dni, dla których ma zostać obliczona średnia krocząca.
+    """
+    data = get_stock_data(stock)
+    mean_volume = data['VOLUME'].rolling(period).mean().dropna()[-days:]
+    return mean_volume
+
+def draw_mean_volume(lista):
+    """
+    Rysuje wykres średniej kroczącej wolumenu. 
+    Parameters
+    ----------
+    lista:List
+    Lista z DataFrames dla poszczególnych zakresów czasowych dla danego waloru 
+
+    """
+
+    x_20 = list(lista[0].index)
+    y_20 = list(lista[0])
+    x_65 = list(lista[1].index)
+    y_65 = list(lista[1])
+    layout = go.Layout(
+         margin={'l': 75, 'r': 75, 't': 10, 'b': 30},
+         width=700,
+         height=450
+    )
+    fig = go.Figure(layout=layout)
+    fig.add_trace(go.Scatter(x = x_20, y = y_20, name='20 dni'))
+    fig.add_trace(go.Scatter(x = x_65, y = y_65, name='65 dni'))
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON

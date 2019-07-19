@@ -125,7 +125,6 @@ def get_financial_data(isin):
                 financial_data.append(all_data_table)
             return financial_years, financial_data
 
-
 def order_book(ticker):
     """
     Pobiera dziesięć zleceń kupna i sprzedaży na podstawie tickera danych akcji 
@@ -174,7 +173,6 @@ def order_book(ticker):
                 return ([0], [0])
         else:
             print('something went wrong with book order scrapping')
-
 
 def get_shareholders(stock_ticker):
     """

@@ -210,6 +210,16 @@
                 <img src="https://stooq.pl/q/h/c/?s={{ticker}}">
             </div>
         </div>
+        <div class="content-block-style">
+                <div class="stock-diagrams">
+                        <div class="section-header">
+                                Średnia wolumenu
+                        </div>
+                        <div id="daily_volume">
+                        </div>
+                </div>
+        </div>
+
 
 
         <!-- Akcjonariat -->
@@ -293,10 +303,12 @@
         var graphs = {{ graphJSON | safe}};
         var daily_return_chart_data = {{ daily | safe}};
         var daily_return_histogram = {{ histogram | safe}};
+        var mean_volume = {{ mean_volume|safe}};
 
         Plotly.plot('chart', graphs, { displayModeBar: false });
         Plotly.plot('daily_return_chart', daily_return_chart_data);
         Plotly.plot('daily_return_histogram', daily_return_histogram);
+        Plotly.plot('daily_volume', mean_volume);
     </script>
 
 </body>
