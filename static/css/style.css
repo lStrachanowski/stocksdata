@@ -359,7 +359,9 @@ input{
     padding: 0.5% 0.25%;
     align-items: center;
 }
-
+.width{
+    width: 50%;
+}
 
 .shareholders-container:nth-child(even){
     background-color: #f3f6fa;
@@ -375,4 +377,10 @@ input{
 .shareholders-container:hover{
     background-color: #e2e2e2;
     cursor: pointer;
+}
+
+.stock-diagrams{
+    width: 33%;
+    padding: 1%;
+    margin: 1%;
 }

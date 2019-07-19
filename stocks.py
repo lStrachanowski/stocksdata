@@ -52,11 +52,12 @@ def stock(stock):
         financial_data = scraping.get_financial_data(isin)
         order_book = scraping.order_book(ticker)
         shareholders = scraping.get_shareholders(ticker)
-        analytics.daily_retun(stock, 60)
+        daily_returns = analytics.daily_retun(stock, 180)
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
-        graphJSON=analytics.draw_chart(df, 180), 
+        graphJSON=analytics.draw_chart(df, 180),
         company_details = info,
-        indicators = indicators,news = news,finance = financial_data, order_book = order_book, shareholders = shareholders, ticker = ticker)
+        indicators = indicators,news = news,finance = financial_data, order_book = order_book, shareholders = shareholders, ticker = ticker, daily =  analytics.draw_daily_returns(daily_returns,90)
+        , histogram = analytics.draw_daily_returns_histogram(daily_returns,90))
 
 
 

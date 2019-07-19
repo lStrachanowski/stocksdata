@@ -68,7 +68,7 @@
             {% endfor%}
         </div>
         <div class="double-container">
-            <div>
+            <div class="width">
                 <!-- Tabela z wiadomościami  -->
                 <div class="header-width">
                     <div class="section-header">
@@ -140,51 +140,78 @@
                         </div>
                     </div>
                 </div>
-
-                <img src="https://stooq.pl/q/h/c/?s={{ticker}}">
             </div>
 
 
             <!-- Tabela z danymi finansowymi  -->
-            <div class="header-width">
-                <div class="section-header">
-                    Finanse
-                </div>
-                <div class="finance-table">
-                    {% for item in finance[0][0:5] %}
-                    <div class="finance-item  year-font">
-                        {{ item }}
+            <div class="width">
+                <div class="header-width">
+                    <div class="section-header">
+                        Finanse
                     </div>
-                    {% endfor%}
-                </div>
-                {% for item in finance[1] %}
-                {% for value in item %}
+                    <div class="finance-table">
+                        {% for item in finance[0][0:5] %}
+                        <div class="finance-item  year-font">
+                            {{ item }}
+                        </div>
+                        {% endfor%}
+                    </div>
+                    {% for item in finance[1] %}
+                    {% for value in item %}
 
 
-                <div class="finance-data">
-                    <div class="finance-item finanace-item-info">
-                        {{value[0]}}
+                    <div class="finance-data">
+                        <div class="finance-item finanace-item-info">
+                            {{value[0]}}
+                        </div>
+                        {% for amount in value[1]%}
+                        {% if amount %}
+                        <div class="finance-item">
+                            {{amount}}
+                        </div>
+                        {%endif%}
+                        {%endfor%}
                     </div>
-                    {% for amount in value[1]%}
-                    {% if amount %}
-                    <div class="finance-item">
-                        {{amount}}
-                    </div>
-                    {%endif%}
                     {%endfor%}
-                </div>
-                {%endfor%}
-                {% endfor %}
-                <div class="finance-table">
-                    {% for item in finance[0][5:] %}
-                    <div class="finance-item  year-font">
-                        {{ item }}
+                    {% endfor %}
+                    <div class="finance-table">
+                        {% for item in finance[0][5:] %}
+                        <div class="finance-item  year-font">
+                            {{ item }}
+                        </div>
+                        {% endfor%}
                     </div>
-                    {% endfor%}
                 </div>
             </div>
-            
         </div>
+        <div class="content-block-style">
+            <div class="stock-diagrams">
+                <div class="section-header">
+                    Dzienne stopy zwrotu 90 dni
+                </div>
+                <!-- Wykres dzinennych zwrotów  -->
+                <div id="daily_return_chart">
+                </div>
+
+            </div>
+            <div class="stock-diagrams">
+                <div class="section-header">
+                    Histogram dziennych stóp zwrotu 90 dni
+                </div>
+                <!-- Histogram zwrotów -->
+                <div id="daily_return_histogram">
+                </div>
+
+            </div>
+            <div class="stock-diagrams">
+                <div class="section-header">
+                    Rozkład akcjonariatu
+                </div>
+                <img src="https://stooq.pl/q/h/c/?s={{ticker}}">
+            </div>
+        </div>
+
+
         <!-- Akcjonariat -->
         <div class="section-header">
             Akcjonariat
@@ -223,38 +250,38 @@
         </div>
         {% for shareholder in shareholders %}
         <div class="shareholders-container">
-                <div class="shareholders-item shareholders-item-samll">
-                    {{shareholder[0]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[1]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[2]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[3]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[4]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[5]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[6]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[7]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[8]}}
-                </div>
-                <div class="shareholders-item">
-                        {{shareholder[9]}}
-                </div>
+            <div class="shareholders-item shareholders-item-samll">
+                {{shareholder[0]}}
             </div>
-            {% endfor %}
+            <div class="shareholders-item">
+                {{shareholder[1]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[2]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[3]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[4]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[5]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[6]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[7]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[8]}}
+            </div>
+            <div class="shareholders-item">
+                {{shareholder[9]}}
+            </div>
+        </div>
+        {% endfor %}
 
     </div>
     <script src="{{url_for('static', filename='js/script.js')}}"></script>
@@ -264,10 +291,14 @@
     <script type="text/javascript">
 
         var graphs = {{ graphJSON | safe}};
+        var daily_return_chart_data = {{ daily | safe}};
+        var daily_return_histogram = {{ histogram | safe}};
 
         Plotly.plot('chart', graphs, { displayModeBar: false });
-
+        Plotly.plot('daily_return_chart', daily_return_chart_data);
+        Plotly.plot('daily_return_histogram', daily_return_histogram);
     </script>
+
 </body>
 
 

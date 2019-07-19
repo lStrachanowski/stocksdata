@@ -8,6 +8,7 @@ import numpy as np
 import json
 import decimal
 
+
 def get_stock_data(stock):
     """
     Zwraca wszytkie wartość z bazy danych dla danego waloru, konwertuje je na DataFrame i ustawia date jako index.
@@ -72,7 +73,7 @@ def draw_chart(df, period=False):
     period : Integer, optional
         Zakres w dniach , na jaki ma zostać narysowany wykres
     """
-    # Wykres świecowy 
+    # Wykres świecowy
     trace_candle = go.Candlestick(
         x=df[-period:].index,
         open=df['OPEN'][-period:],
@@ -105,7 +106,7 @@ def draw_chart(df, period=False):
         name='SMA 50',
         line=dict(
             color=('rgb(56, 148, 153)'),
-            width=2,)   
+            width=2,)
     )
 
     # Volumen
@@ -136,7 +137,7 @@ def draw_chart(df, period=False):
         line=dict(
             color=('rgba(209, 181, 185, 0.5)'),
             width=2,),
-            hoverinfo='none'
+        hoverinfo='none'
     )
 
     boll_65_down = go.Scatter(
@@ -145,7 +146,7 @@ def draw_chart(df, period=False):
         name='Bollinger down',
         line=dict(
             color=('rgba(209, 181, 185, 0.5)'),
-            width=2,)   
+            width=2,)
     )
 
     boll_65_up = go.Scatter(
@@ -154,7 +155,7 @@ def draw_chart(df, period=False):
         name='Bollinger up',
         line=dict(
             color=('rgba(209, 181, 185, 0.5)'),
-            width=2,)   
+            width=2,)
     )
 
     layout = go.Layout(
@@ -162,7 +163,7 @@ def draw_chart(df, period=False):
             rangeslider=dict(
                 visible=False
             ),
-            type = "category"
+            type="category"
         ),
         yaxis=dict(
             title='Price',
@@ -175,12 +176,89 @@ def draw_chart(df, period=False):
         ),
         margin={'l': 75, 'r': 75, 't': 10, 'b': 80}
     )
-    data = [trace_candle, trace_sma200, trace_sma50, volume_bars,boll_65, boll_65_down, boll_65_up]
+    data = [trace_candle, trace_sma200, trace_sma50,
+            volume_bars, boll_65, boll_65_down, boll_65_up]
     fig = go.Figure(data=data, layout=layout)
+    layout = go.Layout(
+        xaxis=dict(
+            rangeslider=dict(
+                visible=False
+            ),
+            type="category"
+        ),
+        yaxis=dict(
+            title='Price',
+            side='left'
+        ),
+        yaxis2=dict(
+            title='Volume',
+            overlaying='y',
+            side='right'
+        ),
+        margin={'l': 75, 'r': 75, 't': 10, 'b': 80}
+    )
+
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
-def daily_retun(stock,days):
+
+def draw_daily_returns(df, period):
+    """
+    Rysuje wykres dziennych stop zwrotu
+
+    Parameters
+    ----------
+    df:DataFrame
+    DataFrame z wartościami dla danego waloru 
+
+    Attributes
+    ----------
+    period : Integer
+        Zakres w dniach , na jaki ma zostać narysowany wykres
+    """
+    x = df.index[-period:]
+    y = df[-period:]
+    layout = go.Layout(
+        xaxis=dict(
+            type="category",
+            showticklabels=False
+        ),
+         width=600,
+         height=350,
+         margin={'l': 75, 'r': 75, 't': 10, 'b': 30}
+    )
+    fig = go.Figure([go.Bar(x=x, y=y)], layout=layout)
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
+def draw_daily_returns_histogram(df, period):
+    """
+    Rysuje histogram dziennych stop zwrotu
+
+    Parameters
+    ----------
+    df:DataFrame
+    DataFrame z wartościami dla danego waloru 
+
+    Attributes
+    ----------
+    period : Integer
+        Zakres w dniach , na jaki ma zostać narysowany wykres
+    """
+    
+    x = df[-period:]
+    layout = go.Layout(
+         margin={'l': 75, 'r': 75, 't': 10, 'b': 30},
+         width=600,
+         height=350
+    )
+    fig = go.Figure(data=[go.Histogram(x=x)], layout = layout)
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
+
+
+def daily_retun(stock, days):
     """
     Zwraca dzienne zmiany waloru dla podanego okresu
     Parameters
@@ -192,6 +270,6 @@ def daily_retun(stock,days):
     """
     data = get_stock_data(stock)[-days:]
     t_min = data.shift()
-    result = (data['CLOSE']/t_min['CLOSE'] -1)* 100
+    result = (data['CLOSE']/t_min['CLOSE'] - 1) * 100
     result.iloc[0] = 0
     return result.astype('float').round(2)

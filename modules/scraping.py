@@ -161,14 +161,14 @@ def order_book(ticker):
                     for s in sibling:
                         sell_row_member.append(s.string)
                     sell.append(sell_row_member)  
-                if len(buy) < 11:
+                if len(buy) < 21:
                     buy = buy[:len(buy)-1]
                 else:
-                    buy = buy[0:10]
-                if len(sell) < 11:
+                    buy = buy[0:20]
+                if len(sell) < 21:
                     sell = sell[:len(sell)-1]
                 else:
-                    sell = sell[0:10]
+                    sell = sell[0:20]
                 return (buy, sell)
             else:
                 return ([0], [0])
