@@ -385,6 +385,7 @@ def update_db(get_days=False, number_of_days=False):
     today_date = datetime.date.today()
     last_date = list(check_last_entry('WIG20'))[0][1]
     diff = today_date - last_date
+    now = datetime.datetime.now()
     if number_of_days:
         if diff.days <= 2 and last_date.weekday() == 4 and today_date.weekday() > 4:
             return 0
@@ -392,10 +393,14 @@ def update_db(get_days=False, number_of_days=False):
             return diff.days
 
     if get_days:
-        if diff.days > 0 and diff.days <= 2 and today_date.weekday() < 5 :
-            return True
-        elif diff.days > 2:
-            return True
+        if diff.days > 0 and diff.days < 7:
+            if last_date.weekday() == 4 and today_date.weekday() > 4:
+                return False
+            else:
+                if diff.days < 2 and now.hour < 19:
+                    return False
+                else:
+                    return True
         else:
             return False
 
