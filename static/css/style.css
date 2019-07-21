@@ -384,3 +384,51 @@ input{
     padding: 1%;
     margin: 1%;
 }
+
+.analyze-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.analyze-display{
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+}
+
+.analyze-item{
+    display: flex;
+    background-color:#effaff;
+    color: rgb(44, 44, 44);
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 2%;
+    padding: 4% 2%;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.analyze-item:hover{
+    background-color:#ffd6c3;
+    color: rgb(200, 12, 12);
+}
+
+.analyze-container-close{
+    display: flex;
+    justify-content:flex-end;
+    font-weight: 600;
+    margin: 2%;
+    color:#332a26;
+    font-size: 25px;
+    cursor: pointer;
+}
+.analyze-container-close:hover{
+    color:#b00000;
+}
+
+.analyze-display-container{
+    display: flex;
+    flex-direction: row;
+}

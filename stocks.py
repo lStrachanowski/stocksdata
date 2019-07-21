@@ -38,6 +38,11 @@ def update():
         database.update_db()
         return "updated"
 
+@app.route('/analyze', methods=['GET','POST'])
+def analyze():
+        analyze = analytics.analyze_volumes([180,90,30])
+        return json.dumps([{"value": period} for period in analyze])
+
 @app.route('/<stock>', methods = ['GET','POST'])
 def stock(stock):
         df = analytics.get_stock_data(stock)
@@ -55,7 +60,6 @@ def stock(stock):
         daily_returns = analytics.daily_retun(stock, 180)
         mean_vol_20 = analytics.volume_mean(stock, 180,20)
         mean_vol_65 = analytics.volume_mean(stock, 180,65)
-
         rolling_volume =  analytics.draw_mean_volume([mean_vol_20,mean_vol_65])
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
         graphJSON=analytics.draw_chart(df, 180),

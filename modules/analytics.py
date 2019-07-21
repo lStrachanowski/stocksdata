@@ -7,6 +7,8 @@ import plotly.graph_objs as go
 import numpy as np
 import json
 import decimal
+import time
+
 
 
 def get_stock_data(stock):
@@ -307,3 +309,46 @@ def draw_mean_volume(lista):
     fig.add_trace(go.Scatter(x = x_65, y = y_65, name='65 dni'))
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
+
+def analyze_volumes(period):
+    """
+    Wyszukuje skoków wolumenu u stosunku do średniej z danego okresu
+        Parameters
+    ----------
+    prtiod:List
+        Lista z liczba dni, dla których wyliczamy średnią.
+    """
+    start_time = time.time()
+    stocks_list = database.get_data('stocks')
+    df  = pd.DataFrame(stocks_list,columns=['TICKER', 'NAME', 'ISIN'] )
+    df_results = pd.DataFrame(columns=['NAME','PERIOD','CHANGE','CLOSE','DAILY'])
+    for name in df['NAME']:
+        try:
+            data = get_stock_data(name)
+            current_volume = data.iloc[-1]['VOLUME']
+            vol_value = float(data.iloc[-1]['CLOSE']) * current_volume 
+            if vol_value > 80000 :
+                for value in period:
+                    mean = stock_mean_volume(data[-value:]['VOLUME'])
+                    current_volume = data[-value:].iloc[-1]['VOLUME']
+                    vol_percent = round((((current_volume/mean)-1)*100),2)
+                    close_price = list(database.check_last_entry(name))[0][5]
+
+                    t_min = data.tail().iloc[-2]['CLOSE']
+                    t = data.tail().iloc[-1]['CLOSE']
+                    d_return = round(((t/t_min)-1)*100,2)
+
+                    df_results = df_results.append({'NAME':name,'PERIOD':value,'CHANGE':vol_percent,'CLOSE':float(close_price),'DAILY':float(d_return)},ignore_index=True)
+                    print(name, value)
+            else:
+                print("Za mały obrót", name)
+        except Exception as e:
+            print(name, " Error", e)
+    result_table = []
+    for p_value in period:
+        r_item = df_results[df_results['PERIOD'].isin([p_value])].sort_values(by =['CHANGE'], ascending=False)
+        result_table.append(r_item.values.tolist())
+    print("Executed in : {} seconds".format(time.time() - start_time) )
+
+    return result_table
+    
