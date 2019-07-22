@@ -397,7 +397,7 @@ def update_db(get_days=False, number_of_days=False):
             if last_date.weekday() == 4 and today_date.weekday() > 4:
                 return False
             else:
-                if diff.days < 2 and now.hour < 19:
+                if diff.days > 0 and now.hour < 19:
                     return False
                 else:
                     return True
