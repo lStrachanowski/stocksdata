@@ -88,9 +88,6 @@ if (document.getElementById('stock-change')) {
 }
 
 
-
-
-
 // Wyświetla wyniki analizy wolumenów
 if (document.getElementById('analyze-button')) {
     document.getElementById('analyze-button').addEventListener("click", () => {
@@ -122,135 +119,8 @@ if (document.getElementById('analyze-button')) {
 
                 var analyze_display_container = document.createElement('div');
                 analyze_display_container.setAttribute('class', 'analyze-display-container');
-
-                // Kolumna z wynikami
-                var analyze_display = document.createElement('div');
-                analyze_display.setAttribute('class', 'analyze-display');
-
-                // Nagłówek kolumny 180
-                var section_header = document.createElement('div');
-                section_header.setAttribute('class', 'section-header');
-                section_header.innerHTML = "180 dni";
-                analyze_display.appendChild(section_header);
-
-                for (var i = 0; i < response[0]['value'].length; i++) {
-                    // Pusty div
-                    var analyze_item = document.createElement('div');
-                    analyze_item.setAttribute('class', 'analyze-item');
-
-                    // Pusty div
-                    var item_empty_div = document.createElement('div');
-
-                    // Link do waloru
-                    var a_href = document.createElement('a');
-                    a_href.setAttribute('href', response[0]['value'][i][0]);
-                    a_href.innerHTML = response[0]['value'][i][0];
-                    item_empty_div.appendChild(a_href);
-                    analyze_item.appendChild(item_empty_div);
-                    // Cena waloru
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][3] + "PLN";
-                    analyze_item.appendChild(item_empty_div);
-
-                    // Dzienna zmiana 
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][4] + " %";
-                    analyze_item.appendChild(item_empty_div);
-
-                    // Procentowa róznica wolumneu od średniej
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][2] + " %";
-                    analyze_item.appendChild(item_empty_div);
-                    analyze_display.appendChild(analyze_item);
-                    analyze_display_container.appendChild(analyze_display);
-
-                    // Koniec kolumny pierwszej 
-                }
-
-                // Nagłówek kolumny 90
-                var analyze_display = document.createElement('div');
-                analyze_display.setAttribute('class', 'analyze-display');
-                var section_header = document.createElement('div');
-                section_header.setAttribute('class', 'section-header');
-                section_header.innerHTML = "90 dni";
-                analyze_display.appendChild(section_header);
-
-                for (var i = 0; i < response[1]['value'].length; i++) {
-                    // Pusty div
-                    var analyze_item = document.createElement('div');
-                    analyze_item.setAttribute('class', 'analyze-item');
-
-                    // Pusty div
-                    var item_empty_div = document.createElement('div');
-
-                    // Link do waloru
-                    var a_href = document.createElement('a');
-                    a_href.setAttribute('href', response[0]['value'][i][0]);
-                    a_href.innerHTML = response[0]['value'][i][0];
-                    item_empty_div.appendChild(a_href);
-                    analyze_item.appendChild(item_empty_div);
-                    // Cena waloru
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][3] + "PLN";
-                    analyze_item.appendChild(item_empty_div);
-
-                    // Dzienna zmiana 
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][4] + " %";
-                    analyze_item.appendChild(item_empty_div);
-
-                    // Procentowa róznica wolumneu od średniej
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][2] + " %";
-                    analyze_item.appendChild(item_empty_div);
-                    analyze_display.appendChild(analyze_item);
-                    analyze_display_container.appendChild(analyze_display);
-
-                    // Koniec kolumny drugiej 
-                }
-
-                // Nagłówek kolumny 30
-                var analyze_display = document.createElement('div');
-                analyze_display.setAttribute('class', 'analyze-display');
-                var section_header = document.createElement('div');
-                section_header.setAttribute('class', 'section-header');
-                section_header.innerHTML = "30 dni";
-                analyze_display.appendChild(section_header);
-
-                for (var i = 0; i < response[2]['value'].length; i++) {
-                    // Pusty div
-                    var analyze_item = document.createElement('div');
-                    analyze_item.setAttribute('class', 'analyze-item');
-
-                    // Pusty div
-                    var item_empty_div = document.createElement('div');
-
-                    // Link do waloru
-                    var a_href = document.createElement('a');
-                    a_href.setAttribute('href', response[2]['value'][i][0]);
-                    a_href.innerHTML = response[2]['value'][i][0];
-                    item_empty_div.appendChild(a_href);
-                    analyze_item.appendChild(item_empty_div);
-                    // Cena waloru
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][3] + "PLN";
-                    analyze_item.appendChild(item_empty_div);
-
-                    // Dzienna zmiana 
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[0]['value'][i][4] + " %";
-                    analyze_item.appendChild(item_empty_div);
-
-                    // Procentowa róznica wolumneu od średniej
-                    var item_empty_div = document.createElement('div');
-                    item_empty_div.innerHTML = response[2]['value'][i][2] + " %";
-                    analyze_item.appendChild(item_empty_div);
-                    analyze_display.appendChild(analyze_item);
-                    analyze_display_container.appendChild(analyze_display);
-                    // Koniec kolumny trzeciej 
-                }
-
-
+                analyze_display_container.appendChild(create_column(90,0));
+                analyze_display_container.appendChild(create_column(30,1));
                 analyze_container.appendChild(emptydiv);
                 analyze_container.appendChild(analyze_display_container);
                 container.appendChild(analyze_container);
@@ -265,4 +135,44 @@ if (document.getElementById('analyze-button')) {
         }
         req.send();
     })
+}
+
+// Tworzy kolumnę z wynikami analizy
+let create_column = (day, num) => {
+    var analyze_display = document.createElement('div');
+    analyze_display.setAttribute('class', 'analyze-display');
+    var section_header = document.createElement('div');
+    section_header.setAttribute('class', 'section-header');
+    section_header.innerHTML = day + " dni";
+    analyze_display.appendChild(section_header);
+    
+    for (var i = 0; i < response[num]['value'].length; i++) {
+        var analyze_item = document.createElement('div');
+        analyze_item.setAttribute('class', 'analyze-item');
+        // Pusty div
+        var item_empty_div = document.createElement('div');
+        // Link do waloru
+        var a_href = document.createElement('a');
+        a_href.setAttribute('href', response[num]['value'][i][0]);
+        a_href.innerHTML = response[num]['value'][i][0];
+        item_empty_div.appendChild(a_href);
+        analyze_item.appendChild(item_empty_div);
+        // Cena waloru
+        var item_empty_div = document.createElement('div');
+        item_empty_div.innerHTML = response[num]['value'][i][3] + "PLN";
+        analyze_item.appendChild(item_empty_div);
+
+        // Dzienna zmiana 
+        var item_empty_div = document.createElement('div');
+        item_empty_div.innerHTML = response[num]['value'][i][4] + " %";
+        analyze_item.appendChild(item_empty_div);
+
+        // Procentowa róznica wolumneu od średniej
+        var item_empty_div = document.createElement('div');
+        item_empty_div.innerHTML = response[num]['value'][i][2] + " %";
+        analyze_item.appendChild(item_empty_div);
+        analyze_display.appendChild(analyze_item);
+    }
+    return analyze_display;
+
 }

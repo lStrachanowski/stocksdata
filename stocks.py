@@ -40,7 +40,7 @@ def update():
 
 @app.route('/analyze', methods=['GET','POST'])
 def analyze():
-        analyze = analytics.analyze_volumes([180,90,30])
+        analyze = analytics.analyze_volumes([90,30])
         return json.dumps([{"value": period} for period in analyze])
 
 @app.route('/<stock>', methods = ['GET','POST'])
