@@ -67,7 +67,10 @@ def stock(stock):
         indicators = indicators,news = news,finance = financial_data, order_book = order_book, shareholders = shareholders, ticker = ticker, daily =  analytics.draw_daily_returns(daily_returns,90)
         , histogram = analytics.draw_daily_returns_histogram(daily_returns,90), mean_volume = rolling_volume)
 
-
+@app.route('/news' , methods=['GET','POST'])
+def news():
+        data = scraping.get_calendar()
+        return render_template('news.html', news = data)
 
 # database.table_operations('stocks','c')
 

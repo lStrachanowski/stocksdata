@@ -19,14 +19,14 @@
             </div>
             {% if update %}
             <form method="POST" action="{{url_for('update')}}"></form>
-                <div class="update-div">
-                    {% if days_counter > 1 %}
-                    Last update : {{days_counter}} days ago
-                    {% else %}
-                    Last update : {{days_counter}} day ago
-                    {% endif %}
-                </div>
-                <div class="search-button update-button" type="submit" id="update-button">Update</div>
+            <div class="update-div">
+                {% if days_counter > 1 %}
+                Last update : {{days_counter}} days ago
+                {% else %}
+                Last update : {{days_counter}} day ago
+                {% endif %}
+            </div>
+            <div class="search-button update-button" type="submit" id="update-button">Update</div>
             {% endif %}
 
         </div>
@@ -50,6 +50,12 @@
         </div>
         <div class="content-block-style" id="content-block">
             <button type="submit" id="analyze-button">Analyze</button>
+        </div>
+        <div class="content-block-style" id="content-block">
+            <form method="POST" action="{{url_for('news')}}">
+                <button type="submit" id="news-button">News</button>
+            </form>
+
         </div>
     </div>
 

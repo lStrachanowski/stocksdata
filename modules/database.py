@@ -284,16 +284,18 @@ def download_data():
         with open(path + 'mstall.zip' , "wb") as code:
             code.write(r.content)
         print("Downloading GPW data ended.")
-    except:
+    except requests.exceptions.RequestException as e:
         print("Something went wrong with dowloading GPW data.")
+        print(e)
     try:
         print("Downloading NewConnect data.")
         r = requests.get(url_newconnect)
         with open(path + 'mstncn.zip' , "wb") as code:
             code.write(r.content)
         print("Downloading NewConnect data ended.")
-    except:
+    except requests.exceptions.RequestException as e:
         print("Something went wrong with dowloading NewConnect data.")
+        print(e)
 
 def unzip_file(directory, file_list):
     """
@@ -352,8 +354,9 @@ def download_week():
         r = requests.get(url)
         with open(path + "gpw.zip", "wb" ) as code:
             code.write(r.content)
-    except:
+    except requests.exceptions.RequestException as e:
         print("Something went wrong with dowloading GPW data.")
+        print(e)
     
 def check_stock(stock):
     """
@@ -402,7 +405,7 @@ def update_db(get_days=False, number_of_days=False):
                 else:
                     return True
         else:
-            return False
+            return True
 
     if diff.days < 7:
         download_week()

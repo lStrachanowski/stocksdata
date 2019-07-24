@@ -87,7 +87,6 @@ if (document.getElementById('stock-change')) {
     }
 }
 
-
 // Wyświetla wyniki analizy wolumenów
 if (document.getElementById('analyze-button')) {
     document.getElementById('analyze-button').addEventListener("click", () => {

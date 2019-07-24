@@ -432,3 +432,30 @@ input{
     display: flex;
     flex-direction: row;
 }
+
+.news-container{
+    display: flex;
+    flex-direction: row;
+    background-color: #f3f6fa;
+    margin: 0.5% 3%;
+    padding: 1.5%;
+    justify-content: space-around;
+    border-radius: 10px;
+}
+
+.news-container:hover{
+    background-color: #b6cdea;
+    cursor: pointer;
+    transition: 0.25s;
+}
+.news-container-item-date{
+    width:10%;
+}
+
+.news-container-item-company{
+    width:20%;
+}
+
+.news-container-item-message{
+    width:70%;
+}

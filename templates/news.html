@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Stock analyzer</title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="header-container">
+            <div class="header-style">
+                <a href="{{url_for('index')}}">Stock analyzer</a>
+            </div>
+        </div>
+        <div class="section-header">
+                Wiadomości
+        </div>
+        {% for value in news %}
+        <div class="news-container">
+            <div class="news-container-item-date">
+                {{value[0]}}
+            </div>
+            <div class="news-container-item-company">
+                {{value[1]}}
+            </div>
+            <div class="news-container-item-message">
+                {{value[2]}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
