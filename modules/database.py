@@ -280,7 +280,7 @@ def download_data():
     path = os.getcwd()+'\\data\\'
     try:
         print("Downloading GPW data.")
-        r = requests.get(url)
+        r = requests.get(url,verify=False)
         with open(path + 'mstall.zip' , "wb") as code:
             code.write(r.content)
         print("Downloading GPW data ended.")
@@ -289,7 +289,7 @@ def download_data():
         print(e)
     try:
         print("Downloading NewConnect data.")
-        r = requests.get(url_newconnect)
+        r = requests.get(url,verify=False)
         with open(path + 'mstncn.zip' , "wb") as code:
             code.write(r.content)
         print("Downloading NewConnect data ended.")
@@ -351,7 +351,7 @@ def download_week():
     url = "https://info.bossa.pl/pub/metastock/mstock/sesjaall/few_last.zip"
     path = os.getcwd()+'\\temp\\'
     try:
-        r = requests.get(url)
+        r = requests.get(url,verify=False)
         with open(path + "gpw.zip", "wb" ) as code:
             code.write(r.content)
     except requests.exceptions.RequestException as e:
@@ -405,7 +405,7 @@ def update_db(get_days=False, number_of_days=False):
                 else:
                     return True
         else:
-            return True
+            return False
 
     if diff.days < 7:
         download_week()

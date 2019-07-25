@@ -48,14 +48,9 @@
         </div>
         <div class="loader" id="loader">
         </div>
-        <div class="content-block-style" id="content-block">
-            <button type="submit" id="analyze-button">Analyze</button>
-        </div>
-        <div class="content-block-style" id="content-block">
-            <form method="POST" action="{{url_for('news')}}">
-                <button type="submit" id="news-button">News</button>
-            </form>
-
+        <div class="button-panel" id="content-block">
+            <button type="submit" id="analyze-button" class="search-button">Analyze</button>
+            <button type="submit" id="news-button" class="search-button" >News</button>             
         </div>
     </div>
 

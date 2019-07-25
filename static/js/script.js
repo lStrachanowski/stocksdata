@@ -74,6 +74,14 @@ if (document.getElementById('update-button')) {
 
 }
 
+// Aktualizacja bazy danych
+if (document.getElementById('news-button')) {
+    document.getElementById('news-button').addEventListener("click", () => {
+    window.location.href = "http://127.0.0.1:5000/news";
+    });
+}
+
+
 // W zależności od wartości dodaje kolor do elementu z procentowym dziennym zwrotem z inwestycji 
 if (document.getElementById('stock-change')) {
     let gain = document.getElementById('stock-change').innerHTML;

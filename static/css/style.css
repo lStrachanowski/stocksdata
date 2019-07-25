@@ -55,6 +55,8 @@ input{
     border-radius: 9px;
     border: none;
 }
+
+
 .search-button:hover{
     transition: 0.3s;
     background: #0f869d;
@@ -459,3 +461,10 @@ input{
 .news-container-item-message{
     width:70%;
 }
+
+.button-panel{
+    display: flex;
+    width: 100%;
+}
+
+  
