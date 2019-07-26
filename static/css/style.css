@@ -56,6 +56,10 @@ input{
     border: none;
 }
 
+.analyze-button-color{
+    background: #a83d3d;
+}
+
 
 .search-button:hover{
     transition: 0.3s;

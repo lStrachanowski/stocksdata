@@ -80,8 +80,7 @@ def draw_chart(df, period=False):
         close=df['CLOSE'][-period:],
         increasing=dict(line=dict(color='#1bbe02')),
         decreasing=dict(line=dict(color='#be0202')),
-        name='Candle',
-        hoverinfo='none'
+        name='Candle'
     )
 
     sma_200 = df['CLOSE'].rolling(200).mean()
@@ -94,7 +93,8 @@ def draw_chart(df, period=False):
         name='SMA 200',
         line=dict(
             color=('rgb(255, 155, 74)'),
-            width=2,)
+            width=2,),
+        hoverinfo='none'
     )
 
     # Sma 50
@@ -104,7 +104,8 @@ def draw_chart(df, period=False):
         name='SMA 50',
         line=dict(
             color=('rgb(56, 148, 153)'),
-            width=2,)
+            width=2,),
+        hoverinfo='none'
     )
 
     # Volumen
@@ -144,7 +145,8 @@ def draw_chart(df, period=False):
         name='Bollinger down',
         line=dict(
             color=('rgba(209, 181, 185, 0.5)'),
-            width=2,)
+            width=2,),
+        hoverinfo='none'
     )
 
     boll_65_up = go.Scatter(
@@ -153,7 +155,8 @@ def draw_chart(df, period=False):
         name='Bollinger up',
         line=dict(
             color=('rgba(209, 181, 185, 0.5)'),
-            width=2,)
+            width=2,),
+        hoverinfo='none'
     )
 
     layout = go.Layout(

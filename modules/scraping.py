@@ -197,8 +197,6 @@ def get_shareholders(stock_ticker):
                 rows_data.append(row_values)
         return rows_data
 
-    
-
 def get_calendar():
     """
     Pobiera kalendarz wydarzeń giełdowych
@@ -217,7 +215,6 @@ def get_calendar():
                 if event.find('div', {"class": "company"}):
                     calendar_data.append([day_date, event.find('div', {"class": "company"}).text.strip(), event.find('div', {"class":"eventDescription"}).text.strip()])
         return calendar_data
-
 
 def short_sale():
     """
