@@ -443,6 +443,18 @@ input{
     padding: 1.5%;
     justify-content: space-around;
     border-radius: 10px;
+    
+}
+
+.short-container{
+    display: flex;
+    flex-direction: row;
+    margin: 0.5% 3%;
+    padding: 1.5%;
+    justify-content: space-around;
+    font-weight: 600;
+    background-color: #66edff69;
+    color: #353535;
 }
 
 .news-container:hover{

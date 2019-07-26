@@ -72,6 +72,11 @@ def news():
         data = scraping.get_calendar()
         return render_template('news.html', news = data)
 
+@app.route('/market', methods=['POST', 'GET'])
+def market():
+        shorts = scraping.short_sale()
+        after_market = scraping.download_marketdata()
+        return render_template('market.html', shorts=shorts, market = after_market)
 # database.table_operations('stocks','c')
 
 # Laduje dane z csv do bazy danych

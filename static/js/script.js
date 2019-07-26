@@ -74,10 +74,17 @@ if (document.getElementById('update-button')) {
 
 }
 
-// Aktualizacja bazy danych
+// Przekierowuje na stronę z wiadomościami
 if (document.getElementById('news-button')) {
     document.getElementById('news-button').addEventListener("click", () => {
     window.location.href = "http://127.0.0.1:5000/news";
+    });
+}
+
+// Przkierowuje na stronę z transakcjami
+if (document.getElementById('market-button')) {
+    document.getElementById('market-button').addEventListener("click", () => {
+    window.location.href = "http://127.0.0.1:5000/market";
     });
 }
 

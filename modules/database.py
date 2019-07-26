@@ -289,7 +289,7 @@ def download_data():
         print(e)
     try:
         print("Downloading NewConnect data.")
-        r = requests.get(url,verify=False)
+        r = requests.get(url_newconnect,verify=False)
         with open(path + 'mstncn.zip' , "wb") as code:
             code.write(r.content)
         print("Downloading NewConnect data ended.")

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Stock analyzer</title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="header-container">
+            <div class="header-style">
+                <a href="{{url_for('index')}}">Stock analyzer</a>
+            </div>
+        </div>
+        <div class="section-header">
+            Market
+        </div>
+        <div class="short-container">
+            <div style="width: 40%">
+                Posiadacz pozycji krótkiej
+            </div>
+            <div style="width: 20%">
+                Nazwa papieru
+            </div>
+            <div style="width: 10%">
+                ISIN
+            </div>
+            <div style="width: 20%">
+                Pozycja krótka netto (%)
+            </div>
+            <div style="width: 10%">
+                Data obliczenia pozycji
+            </div>
+        </div>
+        {% for short in shorts %}
+        <div class="news-container">
+
+            <div style="width: 40%">
+                {{short[1]}}
+            </div>
+            <div style="width: 20%">
+                {{short[2]}}
+            </div>
+            <div style="width: 10%">
+                {{short[3]}}
+            </div>
+            <div style="width: 20%">
+                {{short[4]}} %
+            </div>
+            <div style="width: 10%">
+                {{short[5]}}
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="short-container">
+            <div style="width: 10%">
+                Symbol
+            </div>
+            <div style="width: 20%">
+                Nazwa
+            </div>
+            <div style="width: 10%">
+                Data
+            </div>
+            <div style="width: 10%">
+                Cena
+            </div>
+            <div style="width: 10%">
+                Kurs sesyjny
+            </div>
+            <div style="width: 10%">
+                Cena /Kurs sesyjny
+            </div>
+            <div style="width: 10%">
+                Wolumen
+            </div>
+            <div style="width: 10%">
+                Cena /Kurs sesyjny
+            </div>
+            <div style="width: 10%">
+                Obrót(PLN)
+            </div>
+        </div>
+        {% for position in market %}
+        <div class="news-container">
+            <div style="width: 10%">
+                {{position[0]}}
+            </div>
+            <div style="width: 20%">
+                {{position[1]}}
+            </div>
+            <div style="width: 10%">
+                {{position[2]}}
+            </div>
+            <div style="width: 10%">
+                {{position[3]}}
+            </div>
+            <div style="width: 10%">
+                {{position[4]}}
+            </div>
+            <div style="width: 10%">
+                {{position[5]}}
+            </div>
+            <div style="width: 10%">
+                {{position[6]}}
+            </div>
+            <div style="width: 10%">
+                {{position[7]}}
+            </div>
+            <div style="width: 10%">
+                {{position[8]}}
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</body>
+
+</html>

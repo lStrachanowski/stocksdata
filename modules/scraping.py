@@ -198,8 +198,11 @@ def get_shareholders(stock_ticker):
         return rows_data
 
     
-# Pobiera kalendarz wydarzeń giełdowych
+
 def get_calendar():
+    """
+    Pobiera kalendarz wydarzeń giełdowych
+    """
     base_url = r'https://www.bankier.pl/gielda/kalendarium/'
     page = requests.get(base_url)
     if page.status_code == 200:
@@ -214,3 +217,42 @@ def get_calendar():
                 if event.find('div', {"class": "company"}):
                     calendar_data.append([day_date, event.find('div', {"class": "company"}).text.strip(), event.find('div', {"class":"eventDescription"}).text.strip()])
         return calendar_data
+
+
+def short_sale():
+    """
+    Pobiera listę pozycji krótkich ze strony KNF
+    """
+    base_url = r'https://rss.knf.gov.pl/RssOuterView/faces/hspsList.xhtml'
+    page = requests.get(base_url)
+    if page.status_code == 200:
+        soup = BeautifulSoup(page.content, 'html.parser')
+        table = soup.find_all('tbody')
+        rows = table[0].find_all('tr')
+        short_sale_data = []
+        for val in rows:
+            temp = val.find_all('td')
+            temp_val = []
+            for data in temp:
+                temp_val.append(data.getText())
+            short_sale_data.append(temp_val)
+        return short_sale_data
+
+def download_marketdata():
+    """
+    Pobiera transakcje pakietowe
+    """
+    base_url = r'https://stooq.pl/t/bt/'
+    page = requests.get(base_url)
+    if page.status_code == 200:
+        soup = BeautifulSoup(page.content, 'html.parser')
+        table = soup.find_all('tbody', id='r')
+        rows = table[0].find_all('tr')
+        data = []
+        for row in rows:
+            elements = row.find_all('td')
+            table_row = []
+            for item in elements:
+               table_row.append(item.getText())
+            data.append(table_row)
+        return data
