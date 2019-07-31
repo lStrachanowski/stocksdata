@@ -18,22 +18,33 @@
                 <a href="{{url_for('index')}}">Stock analyzer</a>
             </div>
         </div>
+
         <div class="section-header">
-            Wiadomości
+            Sygnały Bollingera 65
         </div>
-        {% for value in news %}
-        <div class="news-container">
-            <div class="news-container-item-date">
-                {{value[0]}}
+
+        <div class="results-split">
+            <div class="result-column">
+                <div class="result-column-item">
+                    DOWN
+                </div>
+                {% for item in boll_down %}
+                <div class="result-column-item">
+                    <a href="{{item}}">{{item}}</a>
+                </div>
+                {% endfor %}
             </div>
-            <div class="news-container-item-company">
-                {{value[1]}}
-            </div>
-            <div class="news-container-item-message">
-                {{value[2]}}
+            <div class="result-column">
+                <div class="result-column-item">
+                    UP
+                </div>
+                {% for item in boll_up %}
+                <div class="result-column-item">
+                    <a href="{{item}}">{{item}}</a>
+                </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
 
     </div>
 </body>

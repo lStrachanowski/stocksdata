@@ -7,8 +7,8 @@ import plotly.graph_objs as go
 import numpy as np
 import json
 import decimal
+from datetime import date
 import time
-
 
 
 def get_stock_data(stock):
@@ -318,7 +318,7 @@ def analyze_volumes(period):
     Wyszukuje skoków wolumenu u stosunku do średniej z danego okresu
         Parameters
     ----------
-    prtiod:List
+    period:List
         Lista z liczba dni, dla których wyliczamy średnią.
     """
     start_time = time.time()
@@ -354,4 +354,53 @@ def analyze_volumes(period):
     print("Executed in : {} seconds".format(time.time() - start_time) )
 
     return result_table
+    
+def reactivnes():
+    """
+    Oblicza Alfe i betę dla waloru z WIG20 względem zmiany WIG20
+    """
+    today = date.today()
+    stock_data = get_stock_data('PZU')
+    stock_data.sort_values(by=['DATE'])
+
+    index_data = database.get_data_from_db(stock_data.index[0],today,'WIG20')
+    index_df = pd.DataFrame(index_data, columns=['NAME', 'DATE', 'OPEN', 'HIGH', 'LOW', 'CLOSE', 'VOLUME'])
+    index_df.set_index('DATE', inplace=True)
+
+    stock_daily_return = daily_retun('PZU', 250)
+    index_daily_return = daily_retun('WIG20', 250)
+    beta_stock, alpha_stock = np.polyfit(index_daily_return, stock_daily_return ,1 )
+
+    print ("BETA = {}, ALPHA = {}".format(beta_stock, alpha_stock))
+
+def bollinger_crossing(df,period):
+    """
+    Znajduje walory , których aktualny kurs przebił wstęgę bollingera od góry bądź dołu.
+    Parameters
+    ----------
+    df:DataFrame
+    DataFrame z nazwami walorów
+
+    period:Integer
+    Liczba dni, dla których wyliczamy średnią.
+    """
+    results_up = []
+    results_down = []
+    print("Analyzing ...")
+    for value in df:
+        print(value['NAME'])
+        try:
+            stock_df = get_stock_data(value['NAME'])
+            sma = stock_df['CLOSE'].rolling(period).mean()[-1]
+            sma_std = stock_df['CLOSE'].rolling(period).std()[-1]
+            boll_up = sma + (2 * sma_std)
+            boll_down = sma - (2 * sma_std)
+            if stock_df['CLOSE'][-1] >= boll_up:
+                results_up.append(stock_df['NAME'][-1])
+            if stock_df['CLOSE'][-1] <= boll_down:
+                results_down.append(stock_df['NAME'][-1])
+        except Exception as e:
+            print(value['NAME'], e)
+    print("Analyzing ended...")
+    return (results_up,results_down)
     

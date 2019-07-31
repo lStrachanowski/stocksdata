@@ -70,13 +70,24 @@ def stock(stock):
 @app.route('/news' , methods=['GET','POST'])
 def news():
         data = scraping.get_calendar()
-        return render_template('news.html', news = data)
+        # stock_list = database.get_data('stocks')
+        # up, down = analytics.bollinger_crossing(stock_list,65)
+        # return render_template('news.html', news = data, boll_up = up, boll_down = down )
+        return render_template('news.html', news = data )
 
 @app.route('/market', methods=['POST', 'GET'])
 def market():
         shorts = scraping.short_sale()
         after_market = scraping.download_marketdata()
         return render_template('market.html', shorts=shorts, market = after_market)
+
+
+@app.route('/bollsignals', methods=['POST','GET'])
+def bollsignals():
+        stock_list = database.get_data('stocks')
+        up, down = analytics.bollinger_crossing(stock_list,65)
+        return render_template('bollsignals.html', boll_up = up, boll_down = down )
+
 # database.table_operations('stocks','c')
 
 # Laduje dane z csv do bazy danych
