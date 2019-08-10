@@ -404,6 +404,8 @@ def update_db(get_days=False, number_of_days=False):
                     return False
                 else:
                     return True
+        elif diff.days > 7:
+            return True
         else:
             return False
 

@@ -404,3 +404,33 @@ def bollinger_crossing(df,period):
     print("Analyzing ended...")
     return (results_up,results_down)
     
+def sma_crossing(stock, first_sma,second_sma):
+    """
+    Znajduje walory , których sma się przecinają.
+    Parameters
+    ----------
+    stock:String
+    Nazwa waloru
+
+    first_sma:Integer
+    Pierwsza sma
+
+    second_sma:Integer
+    Druga sma
+    """
+    stock_data = get_stock_data(stock)
+    second_sma_values = stock_data['CLOSE'].rolling(second_sma).mean().dropna()
+    first_sma_values = stock_data['CLOSE'].rolling(first_sma).mean().dropna()[-len( second_sma_values):]
+    
+    
+    
+    # diff = first_sma_values - second_sma_values
+    # diff = diff.dropna().round(1)
+    # res = diff.where(diff == 0).dropna()
+    first_sma_values_moved = first_sma_values.shift(1).dropna()
+    second_sma_values_moved = second_sma_values.shift(1).dropna()
+    # print(first_sma_values_moved, second_sma_values_moved)
+    res =  stock_data.where( ((first_sma_values < second_sma_values) & (first_sma_values_moved >= second_sma_values_moved)) |
+   ( (first_sma_values > second_sma_values) & (first_sma_values_moved <= second_sma_values_moved)))
+    print(res.dropna())
+

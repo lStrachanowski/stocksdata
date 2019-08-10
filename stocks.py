@@ -77,6 +77,8 @@ def news():
 
 @app.route('/market', methods=['POST', 'GET'])
 def market():
+        # analytics.sma_crossing('AMICA',50,200)
+        analytics.sma_crossing('11BIT',50,200)
         shorts = scraping.short_sale()
         after_market = scraping.download_marketdata()
         return render_template('market.html', shorts=shorts, market = after_market)
@@ -87,6 +89,7 @@ def bollsignals():
         stock_list = database.get_data('stocks')
         up, down = analytics.bollinger_crossing(stock_list,65)
         return render_template('bollsignals.html', boll_up = up, boll_down = down )
+
 
 # database.table_operations('stocks','c')
 

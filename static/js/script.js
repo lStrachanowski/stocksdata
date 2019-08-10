@@ -98,7 +98,7 @@ if (document.getElementById('boll-button')) {
         req.onload = () => {
             document.getElementById("loader").style.display = 'none';
             document.getElementById("content-block").style.display = 'block';
-            window.location.href = "http://127.0.0.1:5000/bollsignals";
+            // window.location.href = "http://127.0.0.1:5000/bollsignals";
         }
         req.send();
     });
