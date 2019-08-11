@@ -421,15 +421,8 @@ def sma_crossing(stock, first_sma,second_sma):
     stock_data = get_stock_data(stock)
     second_sma_values = stock_data['CLOSE'].rolling(second_sma).mean().dropna()
     first_sma_values = stock_data['CLOSE'].rolling(first_sma).mean().dropna()[-len( second_sma_values):]
-    
-    
-    
-    # diff = first_sma_values - second_sma_values
-    # diff = diff.dropna().round(1)
-    # res = diff.where(diff == 0).dropna()
     first_sma_values_moved = first_sma_values.shift(1).dropna()
     second_sma_values_moved = second_sma_values.shift(1).dropna()
-    # print(first_sma_values_moved, second_sma_values_moved)
     res =  stock_data.where( ((first_sma_values < second_sma_values) & (first_sma_values_moved >= second_sma_values_moved)) |
    ( (first_sma_values > second_sma_values) & (first_sma_values_moved <= second_sma_values_moved)))
     print(res.dropna())

@@ -91,19 +91,11 @@ if (document.getElementById('market-button')) {
 // Przkierowuje na stronę z sygnałami bollingera
 if (document.getElementById('boll-button')) {
     document.getElementById('boll-button').addEventListener("click", () => {
-        var req = new XMLHttpRequest();
-        req.open('POST', '/bollsignals');
-        document.getElementById("loader").style.display = 'block';
-        document.getElementById("content-block").style.display = 'none';
-        req.onload = () => {
-            document.getElementById("loader").style.display = 'none';
-            document.getElementById("content-block").style.display = 'block';
-            // window.location.href = "http://127.0.0.1:5000/bollsignals";
-        }
-        req.send();
+    document.getElementById("loader").style.display = 'block';
+    document.getElementById("content-block").style.display = 'none';
+    window.location.href = "http://127.0.0.1:5000/bollsignals";
     });
 }
-
 
 // W zależności od wartości dodaje kolor do elementu z procentowym dziennym zwrotem z inwestycji 
 if (document.getElementById('stock-change')) {
