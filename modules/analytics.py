@@ -85,6 +85,7 @@ def draw_chart(df, period=False):
 
     sma_200 = df['CLOSE'].rolling(200).mean()
     sma_50 = df['CLOSE'].rolling(50).mean()
+    sma_15 = df['CLOSE'].rolling(15).mean()
 
     # Sma 200
     trace_sma200 = go.Scatter(
@@ -104,6 +105,16 @@ def draw_chart(df, period=False):
         name='SMA 50',
         line=dict(
             color=('rgb(56, 148, 153)'),
+            width=2,),
+        hoverinfo='none'
+    )
+
+    trace_sma15 = go.Scatter(
+        x=df.index[-period:],
+        y=sma_15[-period:],
+        name='SMA 15',
+        line=dict(
+            color=('rgb(68, 21, 196)'),
             width=2,),
         hoverinfo='none'
     )
@@ -177,7 +188,7 @@ def draw_chart(df, period=False):
         ),
         margin={'l': 75, 'r': 75, 't': 10, 'b': 80}
     )
-    data = [trace_candle, trace_sma200, trace_sma50,
+    data = [trace_candle, trace_sma200, trace_sma50,trace_sma15,
             volume_bars, boll_65, boll_65_down, boll_65_up]
     fig = go.Figure(data=data, layout=layout)
     layout = go.Layout(
