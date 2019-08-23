@@ -85,11 +85,19 @@ def bollsignals():
         up, down = analytics.bollinger_crossing(stock_list,65)
         return render_template('bollsignals.html', boll_up = up, boll_down = down )
 
-@app.route('/smacrossing', methods=['POST','GET'])
+@app.route('/sma/smacrossing', methods=['POST','GET'])
 def smacrossing():
-        results = analytics.sma_crossing('BLOOBER',50,200)
-        print(request)
-        return results  
+        results = []
+        sma_15_results = []
+        stock_list = database.get_data('stocks')
+        for stock in stock_list:
+                values = analytics.sma_crossing(stock[1],50,200)
+                results.append(values)
+                sma_15 = analytics.sma_price_crossing(stock[1],15)
+                sma_15_results.append(sma_15)
+        results = list(filter(None,results))
+        sma_15_results = list(filter(None,sma_15_results))
+        return render_template('sma.html', sma_crossing = results, sma_15=sma_15_results)
 
 
 # database.table_operations('stocks','c')

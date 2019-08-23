@@ -97,6 +97,15 @@ if (document.getElementById('boll-button')) {
     });
 }
 
+// Przkierowuje na stronę z sygnałami sma
+if (document.getElementById('sma-button')) {
+    document.getElementById('sma-button').addEventListener("click", () => {
+    document.getElementById("loader").style.display = 'block';
+    document.getElementById("content-block").style.display = 'none';
+    window.location.href = "http://127.0.0.1:5000/sma/smacrossing";
+    });
+}
+
 // W zależności od wartości dodaje kolor do elementu z procentowym dziennym zwrotem z inwestycji 
 if (document.getElementById('stock-change')) {
     let gain = document.getElementById('stock-change').innerHTML;

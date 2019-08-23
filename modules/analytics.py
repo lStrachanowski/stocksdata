@@ -418,12 +418,49 @@ def sma_crossing(stock, first_sma,second_sma):
     second_sma:Integer
     Druga sma
     """
-    stock_data = get_stock_data(stock)
-    second_sma_values = stock_data['CLOSE'].rolling(second_sma).mean().dropna()
-    first_sma_values = stock_data['CLOSE'].rolling(first_sma).mean().dropna()[-len( second_sma_values):]
-    first_sma_values_moved = first_sma_values.shift(1).dropna()
-    second_sma_values_moved = second_sma_values.shift(1).dropna()
-    res =  stock_data.where( ((first_sma_values < second_sma_values) & (first_sma_values_moved >= second_sma_values_moved)) |
-   ( (first_sma_values > second_sma_values) & (first_sma_values_moved <= second_sma_values_moved)))
-    print(res.dropna())
+    try:
+        stock_data = get_stock_data(stock)
+        second_sma_values = stock_data['CLOSE'].rolling(second_sma).mean().dropna()
+        first_sma_values = stock_data['CLOSE'].rolling(first_sma).mean().dropna()[-len( second_sma_values):]
+        first_sma_values_moved = first_sma_values.shift(1).dropna()
+        second_sma_values_moved = second_sma_values.shift(1).dropna()
+        res =  stock_data.where( ((first_sma_values < second_sma_values) & (first_sma_values_moved >= second_sma_values_moved)) |
+        ((first_sma_values > second_sma_values) & (first_sma_values_moved <= second_sma_values_moved))).dropna()
+        difference = date.today() - list(res.index)[-1]
+        print(stock,difference.days)
+        if difference.days < 7 :
+            return [stock,difference.days]
+    except Exception as e:
+        print(stock, e)
+
+def sma_price_crossing(stock, sma):
+    """
+    Znajduje walory , których sma przecina cenę zamkniecia. 
+    Parameters
+    ----------
+    stock:String
+    Nazwa waloru
+
+    sma:Integer
+    Sma
+    """
+    try:
+        stock_data = get_stock_data(stock)
+        turnover = stock_data.iloc[-1]['VOLUME'] * float(stock_data.iloc[-1]['CLOSE'])
+        if turnover > 80000 :
+            print(turnover)
+            sma_values = stock_data['CLOSE'].rolling(sma).mean().dropna()
+            sma_values_moved = sma_values.shift(1).dropna()
+            curr_stock_data = stock_data[-len(sma_values):]['CLOSE']
+            all_stock_moved = curr_stock_data.shift(1).dropna()
+            res =  stock_data.where( ((sma_values < curr_stock_data) & (sma_values_moved >= all_stock_moved)) |
+            ((sma_values > curr_stock_data) & (sma_values_moved <= all_stock_moved))).dropna()
+            difference = date.today() - list(res.index)[-1]
+            print(stock,difference.days)
+            if difference.days < 3:
+                return [stock, difference.days]
+    except Exception as e:
+        print(stock,e)
+
+    
 
