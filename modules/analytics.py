@@ -518,18 +518,23 @@ def orders_supports_resistance(data):
     data:List
     Lista z danymi z arkusza zleceń
     """
-    buy, sell = data[0] , data[1]
+    try:
+        buy, sell = data[0] , data[1]
 
-    for i in range(len(buy)-1) :
-        temp = Decimal(buy[i][2].replace(',','').replace(',','.'))
-        buy[i][2] = temp
-    buy_array = np.array(buy)[:-1]
-    
-    for i in range(len(sell)-1) :
-        temp = Decimal(sell[i][2].replace(',','').replace(',','.'))
-        sell[i][2] = temp
-    sell_array = np.array(sell)[:-1]
-    return[buy_array[buy_array[:,2].argsort()][-5:][:,0].tolist(), sell_array[sell_array[:,2].argsort()][-5:][:,0].tolist()]
+        for i in range(len(buy)-1) :
+            temp = Decimal(buy[i][2].replace(',','').replace(',','.'))
+            buy[i][2] = temp
+        buy_array = np.array(buy)[:-1]
+        
+        for i in range(len(sell)-1) :
+            temp = Decimal(sell[i][2].replace(',','').replace(',','.'))
+            sell[i][2] = temp
+        sell_array = np.array(sell)[:-1]
+        return[buy_array[buy_array[:,2].argsort()][-5:][:,0].tolist(), sell_array[sell_array[:,2].argsort()][-5:][:,0].tolist()]
+    except Exception as e:
+        print(e)
+        return [[],[]]
+   
 
 
 
