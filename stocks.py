@@ -56,13 +56,16 @@ def stock(stock):
         news = scraping.get_news(isin)
         financial_data = scraping.get_financial_data(isin)
         order_book = scraping.order_book(ticker)
+
+        sup_res = analytics.orders_supports_resistance(scraping.order_book(ticker, limited=False))
+
         shareholders = scraping.get_shareholders(ticker)
         daily_returns = analytics.daily_retun(stock, 180)
         mean_vol_20 = analytics.volume_mean(stock, 180,20)
         mean_vol_65 = analytics.volume_mean(stock, 180,65)
         rolling_volume =  analytics.draw_mean_volume([mean_vol_20,mean_vol_65])
         return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
-        graphJSON=analytics.draw_chart(df, 180),
+        graphJSON=analytics.draw_chart(df,sup_res, 180),
         company_details = info,
         indicators = indicators,news = news,finance = financial_data, order_book = order_book, shareholders = shareholders, ticker = ticker, daily =  analytics.draw_daily_returns(daily_returns,90)
         , histogram = analytics.draw_daily_returns_histogram(daily_returns,90), mean_volume = rolling_volume)

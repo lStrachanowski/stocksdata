@@ -125,13 +125,18 @@ def get_financial_data(isin):
                 financial_data.append(all_data_table)
             return financial_years, financial_data
 
-def order_book(ticker):
+def order_book(ticker, limited = True):
     """
     Pobiera dziesięć zleceń kupna i sprzedaży na podstawie tickera danych akcji 
     Parameters
     ----------
     ticker:String
         Ticker dla danego waloru.
+
+    Attributes
+    ----------
+    limited : Boolean
+        Jeżeli false to zwarca całą książkę zleceń 
     """
     base_url = r'https://gragieldowa.pl/spolka_arkusz_zl/spolka/'
     if ticker:
@@ -160,14 +165,15 @@ def order_book(ticker):
                     for s in sibling:
                         sell_row_member.append(s.string)
                     sell.append(sell_row_member)  
-                if len(buy) < 21:
-                    buy = buy[:len(buy)-1]
-                else:
-                    buy = buy[0:20]
-                if len(sell) < 21:
-                    sell = sell[:len(sell)-1]
-                else:
-                    sell = sell[0:20]
+                if limited:
+                    if len(buy) < 21:
+                        buy = buy[:len(buy)-1]
+                    else:
+                        buy = buy[0:20]
+                    if len(sell) < 21:
+                        sell = sell[:len(sell)-1]
+                    else:
+                        sell = sell[0:20]
                 return (buy, sell)
             else:
                 return ([0], [0])

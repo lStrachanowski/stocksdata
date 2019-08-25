@@ -9,6 +9,7 @@ import json
 import decimal
 from datetime import date
 import time
+from decimal import Decimal
 
 
 def get_stock_data(stock):
@@ -57,7 +58,7 @@ def stock_mean_volume(df):
     """
     return df.mean(axis=0)
 
-def draw_chart(df, period=False):
+def draw_chart(df, sup_res, period=False):
     """
     rysuje wykres 
 
@@ -65,6 +66,9 @@ def draw_chart(df, period=False):
     ----------
     df:DataFrame
     DataFrame z wartościami dla danego waloru 
+
+    sup_res:List
+    Lista z cenami, na których jest najwięcej zleceń kupna i sprzedaży w arkuszu zleceń
 
     Attributes
     ----------
@@ -169,6 +173,34 @@ def draw_chart(df, period=False):
             width=2,),
         hoverinfo='none'
     )
+    data = []
+    
+    if len(sup_res[0]) > 0:
+        for val in sup_res[0]:
+            data.append( {
+            'type': 'line',
+            'x0': 0,
+            'y0': float(val),
+            'x1': 180,
+            'y1': float(val),
+            'line': {
+                'color': 'rgba(128, 112, 110,0.25)',
+                'width': 2
+            }
+        })
+    if len(sup_res[1]) > 0:
+        for val in sup_res[1]:
+            data.append( {
+            'type': 'line',
+            'x0': 0,
+            'y0': float(val),
+            'x1': 180,
+            'y1': float(val),
+            'line': {
+                'color': 'rgba(26, 158, 12,0.25)',
+                'width': 2
+            }
+        })
 
     layout = go.Layout(
         xaxis=dict(
@@ -186,8 +218,10 @@ def draw_chart(df, period=False):
             overlaying='y',
             side='right'
         ),
-        margin={'l': 75, 'r': 75, 't': 10, 'b': 80}
+        margin={'l': 75, 'r': 75, 't': 10, 'b': 80},
+        shapes= data
     )
+    
     data = [trace_candle, trace_sma200, trace_sma50,trace_sma15,
             volume_bars, boll_65, boll_65_down, boll_65_up]
     fig = go.Figure(data=data, layout=layout)
@@ -207,7 +241,8 @@ def draw_chart(df, period=False):
             overlaying='y',
             side='right'
         ),
-        margin={'l': 75, 'r': 75, 't': 10, 'b': 80}
+        margin={'l': 75, 'r': 75, 't': 10, 'b': 80},
+        shapes=[]
     )
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
@@ -475,3 +510,29 @@ def sma_price_crossing(stock, sma):
 
     
 
+def orders_supports_resistance(data):
+    """
+    Zwraca trzy ceny , na których jest najwięcej zleceń kupna i sprzedaży w arkuszu zleceń
+    Parameters
+    ----------
+    data:List
+    Lista z danymi z arkusza zleceń
+    """
+    buy, sell = data[0] , data[1]
+
+    for i in range(len(buy)-1) :
+        temp = Decimal(buy[i][2].replace(',','').replace(',','.'))
+        buy[i][2] = temp
+    buy_array = np.array(buy)[:-1]
+    
+    for i in range(len(sell)-1) :
+        temp = Decimal(sell[i][2].replace(',','').replace(',','.'))
+        sell[i][2] = temp
+    sell_array = np.array(sell)[:-1]
+    return[buy_array[buy_array[:,2].argsort()][-5:][:,0].tolist(), sell_array[sell_array[:,2].argsort()][-5:][:,0].tolist()]
+
+
+
+
+
+  
