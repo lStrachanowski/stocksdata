@@ -508,28 +508,30 @@ def sma_price_crossing(stock, sma):
     except Exception as e:
         print(stock,e)
 
-    
-
-def orders_supports_resistance(data):
+def orders_supports_resistance(data, stock):
     """
-    Zwraca trzy ceny , na których jest najwięcej zleceń kupna i sprzedaży w arkuszu zleceń
+    Zwraca pięć cen , na których jest najwięcej zleceń kupna i sprzedaży w arkuszu zleceń
     Parameters
     ----------
     data:List
     Lista z danymi z arkusza zleceń
+    stock:String
+    Nazwa waloru
     """
     try:
+        current_close = get_stock_data(stock)['CLOSE'][-1]
         buy, sell = data[0] , data[1]
-
         for i in range(len(buy)-1) :
             temp = Decimal(buy[i][2].replace(',','').replace(',','.'))
             buy[i][2] = temp
-        buy_array = np.array(buy)[:-1]
-        
+        b_array = list(filter(lambda x: float(x[0]) > (float(current_close) - ( 0.5 * float(current_close))), buy[:-1]))
+        buy_array = np.array(b_array)[:-1]
+            
         for i in range(len(sell)-1) :
             temp = Decimal(sell[i][2].replace(',','').replace(',','.'))
             sell[i][2] = temp
-        sell_array = np.array(sell)[:-1]
+        s_array = list(filter(lambda x: float(x[0]) <  (float(current_close) + (0.5 * float(current_close))), sell[:-1]))
+        sell_array = np.array(s_array)[:-1]
         return[buy_array[buy_array[:,2].argsort()][-5:][:,0].tolist(), sell_array[sell_array[:,2].argsort()][-5:][:,0].tolist()]
     except Exception as e:
         print(e)

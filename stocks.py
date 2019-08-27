@@ -57,7 +57,7 @@ def stock(stock):
         financial_data = scraping.get_financial_data(isin)
         order_book = scraping.order_book(ticker)
 
-        sup_res = analytics.orders_supports_resistance(scraping.order_book(ticker, limited=False))
+        sup_res = analytics.orders_supports_resistance(scraping.order_book(ticker, limited=False),stock)
 
         shareholders = scraping.get_shareholders(ticker)
         daily_returns = analytics.daily_retun(stock, 180)
