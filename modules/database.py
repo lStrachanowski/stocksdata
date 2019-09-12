@@ -437,6 +437,7 @@ def update_db(get_days=False, number_of_days=False):
         unzip_file(os.getcwd()+'\\data\\',['mstall.zip','mstncn.zip'])
         delete_old_files()
         load_stocks_details()
+        remove_temp_files(os.getcwd()+"\\"+"data")
         print('Baza aktualna')
 
 def search_value(value):
@@ -454,3 +455,20 @@ def search_value(value):
     conn.close()
     return data
 
+def remove_temp_files(path):
+    """
+    Usuwa tymczasowe pliki
+
+    Parameters
+    ----------
+    path:String
+        ścieżka do folderu , w którym znajdują się pliki do usunięcia 
+    """
+    file_list = os.listdir(path)
+    if len(file_list) > 0:
+        for file in file_list:
+            os.remove(path+"\\" + file)
+        print("Files removed")
+    else:
+        print("Nothing to delete")
+        
