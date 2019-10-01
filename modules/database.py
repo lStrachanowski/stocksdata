@@ -428,6 +428,7 @@ def update_db(get_days=False, number_of_days=False):
                         for r in reader:
                             if check_stock(r[0]):
                                 add_stock_data(r)
+        remove_temp_files(os.getcwd()+"\\"+"temp")
         print('Baza aktualna')
     else:
         print('Odświeżanie bazy danych')
