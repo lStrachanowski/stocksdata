@@ -76,6 +76,7 @@ def stock_details(stock):
         t_min = df.tail().iloc[-2]['CLOSE']
         t = df.tail().iloc[-1]['CLOSE']
         d_return = round(((t/t_min)-1)*100,2)
+        database.get_intraday_data(stock)
         return render_template('details.html',stock=stock,close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return)
 
 @app.route('/news' , methods=['GET','POST'])

@@ -473,3 +473,22 @@ def remove_temp_files(path):
     else:
         print("Nothing to delete")
         
+def get_intraday_data(stock):
+    """
+    Pobiera dane intraday dla danego waloru z bossa.pl 
+    Parameters
+    ----------
+    stock:String
+        Nazwa waloru  
+    """
+    filename = stock + ".zip"
+    url = "https://info.bossa.pl/pub/intraday/mstock/cgl//"+ filename
+    path = os.getcwd()+'\\temp\\'
+    try:
+        r = requests.get(url,verify=False)
+        with open(path + filename, "wb" ) as code:
+            code.write(r.content)
+    except requests.exceptions.RequestException as e:
+        print("Something went wrong with dowloading stock data.")
+        print(e)
+
