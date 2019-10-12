@@ -70,6 +70,14 @@ def stock(stock):
         indicators = indicators,news = news,finance = financial_data, order_book = order_book, shareholders = shareholders, ticker = ticker, daily =  analytics.draw_daily_returns(daily_returns,90)
         , histogram = analytics.draw_daily_returns_histogram(daily_returns,90), mean_volume = rolling_volume)
 
+@app.route('/<stock>/details', methods=['GET','POST'])
+def stock_details(stock):
+        df = analytics.get_stock_data(stock)
+        t_min = df.tail().iloc[-2]['CLOSE']
+        t = df.tail().iloc[-1]['CLOSE']
+        d_return = round(((t/t_min)-1)*100,2)
+        return render_template('details.html',stock=stock,close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return)
+
 @app.route('/news' , methods=['GET','POST'])
 def news():
         data = scraping.get_calendar()

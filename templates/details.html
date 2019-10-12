@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{{stock}}</title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="header-container">
+            <div class="header-style">
+                <a href="{{url_for('index')}}">Stock analyzer</a>
+            </div>
+        </div>
+        <div class="content-block-style" id="content-block">
+            <div class="stock-style">
+                {{stock}}
+            </div>
+            <div class="stock-style">
+                {{close_price}} PLN
+            </div>
+            <div class="stock-style" id="stock-change">
+                ({{daily_return}} %)
+            </div>
+        </div>
+
+
+
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <script type="text/javascript">
+
+
+    </script>
+
+</body>
+
+
+</html>
