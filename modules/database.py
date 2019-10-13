@@ -492,12 +492,15 @@ def get_intraday_data(stock):
     except requests.exceptions.RequestException as e:
         print("Something went wrong with dowloading stock data.")
         print(e)
-    unzip_file(path,[filename])
-    print(path+filename)
+    unzip_file(path,[filename + ".zip"])
     if os.path.isfile(path+filename+".prn"):
-        data = pd.read_csv(path+filename+".prn")
+        data = pd.read_csv(path+filename+".prn",header=None)
+        df = pd.DataFrame(data)
+        df.drop(columns= [1,9], axis=1, inplace=True)
+        df.columns = ['NAME','DATE','HOUR','OPEN','HIGH','LOW','CLOSE','VOLUME']
+        df.set_index(['DATE'], inplace=True)
         remove_temp_files(path)
-        return data
+        return df
     else:
         print('No file downloaded')
 
