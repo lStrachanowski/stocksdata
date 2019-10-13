@@ -6,6 +6,7 @@ import datetime
 from sqlalchemy import create_engine, MetaData, Table, Column,String,Numeric,Integer,Time,Date, select,exists, func, and_, text,Float,desc
 sys.path.append(os.getcwd()+'\\modules\\')
 import credentials 
+import pandas as pd
 # zawiera login i hasło do bazy danych 
 import csv
 engine = create_engine("postgresql://postgres:"+credentials.PASSWORD + "@localhost/" + credentials.DATABASE_NAME)
@@ -481,14 +482,22 @@ def get_intraday_data(stock):
     stock:String
         Nazwa waloru  
     """
-    filename = stock + ".zip"
+    filename = stock
     url = "https://info.bossa.pl/pub/intraday/mstock/cgl//"+ filename
     path = os.getcwd()+'\\temp\\'
     try:
         r = requests.get(url,verify=False)
-        with open(path + filename, "wb" ) as code:
+        with open(path + filename + ".zip", "wb" ) as code:
             code.write(r.content)
     except requests.exceptions.RequestException as e:
         print("Something went wrong with dowloading stock data.")
         print(e)
+    unzip_file(path,[filename])
+    print(path+filename)
+    if os.path.isfile(path+filename+".prn"):
+        data = pd.read_csv(path+filename+".prn")
+        remove_temp_files(path)
+        return data
+    else:
+        print('No file downloaded')
 
