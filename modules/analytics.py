@@ -374,8 +374,8 @@ def draw_volume_distribution(df):
             type="category",
             showticklabels=False
         ),
-         width=750,
-         height=500,
+         width=700,
+         height=450,
          margin={'l': 75, 'r': 75, 't': 10, 'b': 30}
     )
     fig = go.Figure([go.Bar(x=x, y=y)], layout=layout)
