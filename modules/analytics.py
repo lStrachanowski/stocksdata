@@ -359,6 +359,29 @@ def draw_mean_volume(lista):
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
+def draw_volume_distribution(df):
+    """
+    Rysuje wykres dziennego rozkładu wolumenu
+    Parameters
+    ----------
+    df:DataFrame
+    Dataframe z volumenami dla danego poziomu cenowego
+    """
+    x = df.index
+    y = df
+    layout = go.Layout(
+        xaxis=dict(
+            type="category",
+            showticklabels=False
+        ),
+         width=750,
+         height=500,
+         margin={'l': 75, 'r': 75, 't': 10, 'b': 30}
+    )
+    fig = go.Figure([go.Bar(x=x, y=y)], layout=layout)
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
+
 def analyze_volumes(period):
     """
     Wyszukuje skoków wolumenu u stosunku do średniej z danego okresu

@@ -10,6 +10,8 @@ import json
 from flask import Flask
 from flask import render_template, request,redirect, url_for, jsonify
 import requests
+import matplotlib.pyplot as plt
+import numpy as np
 app = Flask(__name__)
 
 stock_list = []
@@ -76,8 +78,11 @@ def stock_details(stock):
         t_min = df.tail().iloc[-2]['CLOSE']
         t = df.tail().iloc[-1]['CLOSE']
         d_return = round(((t/t_min)-1)*100,2)
-        print(database.get_intraday_data(stock))
-        return render_template('details.html',stock=stock,close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return)
+        day_df = database.get_intraday_data(stock)
+        last_entry = database.check_last_entry(stock)
+        last_entry_date = int(str(list(last_entry)[0][1]).replace('-',''))
+        volume_distribution = analytics.draw_volume_distribution(day_df[day_df.index == last_entry_date].groupby('CLOSE')['VOLUME'].sum())
+        return render_template('details.html',stock=stock,close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,volume_distribution =volume_distribution )
 
 @app.route('/news' , methods=['GET','POST'])
 def news():

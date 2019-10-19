@@ -30,7 +30,16 @@
             </div>
         </div>
 
-
+        <div class="content-block-style">
+            <div class="stock-diagrams">
+                    <div class="section-header">
+                            Dzienny rozkład wolumenu
+                    </div>
+                    <div id="daily_volume">
+                    </div>
+            </div>
+    </div>
+    </div>
 
     <script src="{{url_for('static', filename='js/script.js')}}"></script>
     <!-- Plotly.js -->
@@ -38,6 +47,8 @@
 
     <script type="text/javascript">
 
+        var volume_distribution = {{ volume_distribution|safe}};
+        Plotly.plot('daily_volume', volume_distribution);
 
     </script>
 
