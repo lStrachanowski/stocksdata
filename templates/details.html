@@ -28,17 +28,33 @@
             <div class="stock-style" id="stock-change">
                 ({{daily_return}} %)
             </div>
+            <div class="stock-style stock-change-up">
+                UP: {{total_up_down_volume[0]}}
+            </div>
+            <div class="stock-style stock-change-down">
+                DOWN: {{total_up_down_volume[1]}}
+            </div>
         </div>
 
         <div class="content-block-style">
             <div class="stock-diagrams">
-                    <div class="section-header">
-                            Dzienny rozkład wolumenu
-                    </div>
-                    <div id="daily_volume">
-                    </div>
+                <div class="section-header">
+                    Dzienny rozkład wolumenu
+                </div>
+                <div id="daily_volume">
+                </div>
             </div>
-    </div>
+        </div>
+        <div class="content-block-style">
+            <div class="stock-diagrams">
+                <div class="section-header">
+                    Dzienny wolumen na wzrostach i spadkach 
+                </div>
+                <div id="daily_up_down">
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script src="{{url_for('static', filename='js/script.js')}}"></script>
@@ -47,8 +63,12 @@
 
     <script type="text/javascript">
 
-        var volume_distribution = {{ volume_distribution|safe}};
+        var volume_distribution = {{ volume_distribution| safe}};
         Plotly.plot('daily_volume', volume_distribution);
+
+        var volume_up_down = {{ up_down_drawing| safe}};
+        Plotly.plot('daily_up_down', volume_up_down);
+
 
     </script>
 

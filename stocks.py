@@ -12,6 +12,7 @@ from flask import render_template, request,redirect, url_for, jsonify
 import requests
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 app = Flask(__name__)
 
 stock_list = []
@@ -66,7 +67,7 @@ def stock(stock):
         mean_vol_20 = analytics.volume_mean(stock, 180,20)
         mean_vol_65 = analytics.volume_mean(stock, 180,65)
         rolling_volume =  analytics.draw_mean_volume([mean_vol_20,mean_vol_65])
-        return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,
+        return render_template('stocks.html', stock=stock, close_price = list(database.check_last_entries(stock,1))[0][5], daily_return = d_return,
         graphJSON=analytics.draw_chart(df,sup_res, 180),
         company_details = info,
         indicators = indicators,news = news,finance = financial_data, order_book = order_book, shareholders = shareholders, ticker = ticker, daily =  analytics.draw_daily_returns(daily_returns,90)
@@ -79,10 +80,22 @@ def stock_details(stock):
         t = df.tail().iloc[-1]['CLOSE']
         d_return = round(((t/t_min)-1)*100,2)
         day_df = database.get_intraday_data(stock)
-        last_entry = database.check_last_entry(stock)
+        last_entry = database.check_last_entries(stock,1)
         last_entry_date = int(str(list(last_entry)[0][1]).replace('-',''))
+        day_transactions = day_df[day_df.index == last_entry_date]
+        
+        up_down_vol = analytics.up_down_volume(day_transactions)
+        data = pd.DataFrame(columns=['DATE','UP','DOWN'])
+        month = list(database.check_last_entries(stock,30))
+        for day in month:
+                temp = analytics.up_down_volume(day_df[day_df.index == int(str(day[1]).replace('-',''))])
+                print(temp)
+                data = data.append({'DATE':day[1],'UP':temp[0],'DOWN':temp[1]},ignore_index=True)
+        
+        
         volume_distribution = analytics.draw_volume_distribution(day_df[day_df.index == last_entry_date].groupby('CLOSE')['VOLUME'].sum())
-        return render_template('details.html',stock=stock,close_price = list(database.check_last_entry(stock))[0][5], daily_return = d_return,volume_distribution =volume_distribution )
+        return render_template('details.html',stock=stock,close_price = list(database.check_last_entries(stock,1))[0][5], daily_return = d_return,volume_distribution =volume_distribution,
+        total_up_down_volume = [up_down_vol[0],up_down_vol[1]] , up_down_drawing = analytics.draw_up_down_volumes(data))
 
 @app.route('/news' , methods=['GET','POST'])
 def news():

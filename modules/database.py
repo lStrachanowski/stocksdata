@@ -155,15 +155,17 @@ def get_data_from_db(from_date,to_date,stock_name):
     conn.close()
     return data 
 
-def check_last_entry(stock):
+def check_last_entries(stock,limit_value):
     """
     Sprawdza datę ostatniego wpisu w bazie danych 
     Parameters
     ----------
     stock:String
     Nazwa waloru
+    limit_value:Integer
+    Liczba zwracanych wyników 
     """
-    selected = day_transactions.select().where(day_transactions.c.NAME == stock).order_by(desc(day_transactions.c.DATE)).limit(1)
+    selected = day_transactions.select().where(day_transactions.c.NAME == stock).order_by(desc(day_transactions.c.DATE)).limit(limit_value)
     conn = engine.connect()
     data = conn.execute(selected)
     conn.close()
@@ -387,7 +389,7 @@ def update_db(get_days=False, number_of_days=False):
         pobiera różnicę w datach ostatniej wartości w bazie danych a obecną datą 
     """
     today_date = datetime.date.today()
-    last_date = list(check_last_entry('WIG20'))[0][1]
+    last_date = list(check_last_entries('WIG20',1))[0][1]
     diff = today_date - last_date
     now = datetime.datetime.now()
     if number_of_days:

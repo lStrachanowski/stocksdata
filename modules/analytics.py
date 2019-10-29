@@ -559,10 +559,56 @@ def orders_supports_resistance(data, stock):
     except Exception as e:
         print(e)
         return [[],[]]
-   
 
+def draw_up_down_volumes(lista):
+    """
+    Rysuje wykres wolumenów na dziennym na wzroście i spadku ceny
+    Parameters
+    ----------
+    lista:DataFrame
+    DataFrame z sumą wolumenu na wzroście i spadku intraday
+    """
+    x = lista['DATE']
+    y_up = lista['UP']
+    y_down = lista['DOWN']
+    layout = go.Layout(
+         margin={'l': 75, 'r': 75, 't': 10, 'b': 30},
+         width=700,
+         height=450
+    )
+    fig = go.Figure(layout=layout)
+    fig.add_trace(go.Scatter(x = x, y = y_up, name='up'))
+    fig.add_trace(go.Scatter(x = x, y = y_down, name='down'))
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return graphJSON
 
+def up_down_volume(df):
+    """
+    Oblicza wolumen na wzoście i spadku ceny waloru
+    Parameters
+    ----------
+    df:DataFrame
+    DataFrame z dziennymi transakcjami na walorze 
+    """
+    current_price = 0
+    state = "up"
+    df_results = pd.DataFrame(columns=['STATE','CLOSE','VOLUME'])
+    
+    for index, row in df.iterrows():
+            if row['CLOSE'] > current_price:
+                    current_price = row['CLOSE']
+                    state = "up"
+                    df_results = df_results.append({'STATE':'up','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+            if row['CLOSE'] == current_price and state =='up':
+                    current_price = row['CLOSE']
+                    df_results = df_results.append({'STATE':'up','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+            if row['CLOSE'] < current_price:
+                    current_price = row['CLOSE']
+                    state = "down"
+                    df_results = df_results.append({'STATE':'down','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+            if row['CLOSE'] == current_price and state =='down':
+                    current_price = row['CLOSE']
+                    df_results = df_results.append({'STATE':'down','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+    down, up = df_results.groupby('STATE')['VOLUME'].sum()
+    return down, up
 
-
-
-  
