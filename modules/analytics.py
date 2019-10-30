@@ -404,12 +404,10 @@ def analyze_volumes(period):
                     mean = stock_mean_volume(data[-value:]['VOLUME'])
                     current_volume = data[-value:].iloc[-1]['VOLUME']
                     vol_percent = round((((current_volume/mean)-1)*100),2)
-                    close_price = list(database.check_last_entry(name))[0][5]
-
+                    close_price = list(database.check_last_entries(name,1))[0][5]
                     t_min = data.tail().iloc[-2]['CLOSE']
                     t = data.tail().iloc[-1]['CLOSE']
                     d_return = round(((t/t_min)-1)*100,2)
-
                     df_results = df_results.append({'NAME':name,'PERIOD':value,'CHANGE':vol_percent,'CLOSE':float(close_price),'DAILY':float(d_return)},ignore_index=True)
                     print(name, value)
             else:
@@ -609,6 +607,16 @@ def up_down_volume(df):
             if row['CLOSE'] == current_price and state =='down':
                     current_price = row['CLOSE']
                     df_results = df_results.append({'STATE':'down','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
-    down, up = df_results.groupby('STATE')['VOLUME'].sum()
+    down  = 0
+    up = 0
+    if len(df_results.groupby('STATE')['VOLUME'].sum()) > 1:
+        down, up = df_results.groupby('STATE')['VOLUME'].sum()
+    else:
+        if df_results.iloc[0]['STATE'] == 'up':
+            up = df_results.groupby('STATE')['VOLUME'].sum()[0]
+            down = 0
+        else:
+            down = up = df_results.groupby('STATE')['VOLUME'].sum()[0]
+            up = 0
     return down, up
 
