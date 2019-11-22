@@ -13,6 +13,7 @@ import requests
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
 app = Flask(__name__)
 
 stock_list = []
@@ -59,7 +60,7 @@ def stock(stock):
         news = scraping.get_news(isin)
         financial_data = scraping.get_financial_data(isin)
         order_book = scraping.order_book(ticker)
-
+        analytics.rsi(df)
         sup_res = analytics.orders_supports_resistance(scraping.order_book(ticker, limited=False),stock)
 
         shareholders = scraping.get_shareholders(ticker)
@@ -83,7 +84,6 @@ def stock_details(stock):
         last_entry = database.check_last_entries(stock,1)
         last_entry_date = int(str(list(last_entry)[0][1]).replace('-',''))
         day_transactions = day_df[day_df.index == last_entry_date]
-        
         up_down_vol = analytics.up_down_volume(day_transactions)
         data = pd.DataFrame(columns=['DATE','UP','DOWN'])
         month = list(database.check_last_entries(stock,30))

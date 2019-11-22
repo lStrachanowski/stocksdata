@@ -7,10 +7,10 @@ import plotly.graph_objs as go
 import numpy as np
 import json
 import decimal
-from datetime import date
+from datetime import date,datetime,timedelta
 import time
 from decimal import Decimal
-
+import ta as t
 
 def get_stock_data(stock):
     """
@@ -275,7 +275,7 @@ def draw_daily_returns(df, period):
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return graphJSON
 
-def draw_daily_returns_histogram(df, period):
+def draw_daily_returns_histogram(df, period ):
     """
     Rysuje histogram dziennych stop zwrotu
 
@@ -620,3 +620,35 @@ def up_down_volume(df):
             up = 0
     return down, up
 
+def rsi(df, draw_chart = False):
+    """
+    Oblicza RSI dla danego waloru dla 14 dni bądź zwraca wartości dla wykresu RSI
+
+    Parameters
+    ----------
+    df:DataFrame
+    DataFrame z wartościami dla danego waloru 
+
+    Attributes
+    ----------
+    draw_chart : Boolean, optional
+        Jeżeli True zwraca wartości dla wykresu, w innym wypadku zwracana jest ostatnia wartość RSI
+    """
+    time_delta = timedelta(days=104)
+    period = datetime.date(datetime.now()) - time_delta
+    df = df[df.index >= period]
+    delta = pd.to_numeric(df['CLOSE']).diff()
+    length = 14
+    delta = delta[1:]
+    up, down = delta.copy(), delta.copy()
+    up[up < 0.0] = 0.0
+    down[down > 0.0] = 0.0
+    roll_up = up.ewm(com=(length-1), min_periods=length).mean()
+    roll_down = down.abs().ewm(com=(length-1), min_periods=length).mean()
+    RS = roll_up / roll_down
+    RSI = 100.0 - (100.0 / (1.0 + RS))
+    RSI = RSI.dropna()
+    if draw_chart:
+        return RSI
+    else:
+        return RSI[-1:]
