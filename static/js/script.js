@@ -106,6 +106,15 @@ if (document.getElementById('sma-button')) {
     });
 }
 
+// Przkierowuje na stronę z rezultatami skanowania zmienności
+if (document.getElementById('vol-button')) {
+    document.getElementById('vol-button').addEventListener("click", () => {
+    document.getElementById("loader").style.display = 'block';
+    document.getElementById("content-block").style.display = 'none';
+    window.location.href = "http://127.0.0.1:5000/volatilityscan";
+    });
+}
+
 // W zależności od wartości dodaje kolor do elementu z procentowym dziennym zwrotem z inwestycji 
 if (document.getElementById('stock-change')) {
     let gain = document.getElementById('stock-change').innerHTML;

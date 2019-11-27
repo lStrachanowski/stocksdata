@@ -10,7 +10,7 @@ import decimal
 from datetime import date,datetime,timedelta
 import time
 from decimal import Decimal
-import ta as t
+import matplotlib.pyplot as plt
 
 def get_stock_data(stock):
     """
@@ -652,3 +652,22 @@ def rsi(df, draw_chart = False):
         return RSI
     else:
         return RSI[-1:]
+
+def volatility(df):
+    """
+    Oblicza zmienność danego waloru określanego jako 
+    Parameters
+    ----------
+    df:DataFrame
+    DataFrame z wartościami dla danego waloru 
+    """
+    time_delta = timedelta(days=104)
+    period = datetime.date(datetime.now()) - time_delta
+    df = df[df.index >= period]
+    delta = pd.to_numeric(df['CLOSE']).diff()
+    data_operations = pd.DataFrame(columns=['rolling_deviation', 'rolling_deviation_mean','signal'])
+    data_operations['rolling_deviation'] = delta.rolling(7).std().dropna()
+    data_operations['rolling_deviation_mean'] = pd.to_numeric(data_operations['rolling_deviation']).rolling(7).mean().dropna()
+    data_operations['signal'] = data_operations['rolling_deviation'] < data_operations['rolling_deviation_mean']
+    return data_operations.dropna()[-7:]['signal'].value_counts()
+

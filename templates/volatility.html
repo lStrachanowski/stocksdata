@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{{stock}}</title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="header-container">
+            <div class="header-style">
+                <a href="{{url_for('index')}}">Stock analyzer</a>
+            </div>
+        </div>
+        <div class="section-header">
+            Volatility scanner
+        </div>
+        {% for value in results_display %}
+        <div class="news-container">
+
+            <div style="width: 60%">
+                <a href="{{url_for('stock', stock=value[0])}}">{{value[0]}}</a>
+            </div>
+            <div style="width: 40%">
+                {{value[1]}}
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+    <!-- Plotly.js -->
+
+</body>
+
+
+</html>

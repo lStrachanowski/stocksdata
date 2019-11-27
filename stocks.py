@@ -60,7 +60,7 @@ def stock(stock):
         news = scraping.get_news(isin)
         financial_data = scraping.get_financial_data(isin)
         order_book = scraping.order_book(ticker)
-        analytics.rsi(df)
+        # analytics.rsi(df)
         sup_res = analytics.orders_supports_resistance(scraping.order_book(ticker, limited=False),stock)
 
         shareholders = scraping.get_shareholders(ticker)
@@ -129,6 +129,28 @@ def smacrossing():
         sma_15_results = list(filter(None,sma_15_results))
         return render_template('sma.html', sma_crossing = results, sma_15=sma_15_results)
 
+@app.route('/volatilityscan', methods=['POST','GET'])
+def volatility_scan():
+        stock_list = database.get_data('stocks')
+        results = []
+        for stock in stock_list:
+                # if stock[1] =='ARAMUS':
+                #         break;
+                try:
+                        stock_data = analytics.get_stock_data(stock[1])
+                        turnover = stock_data.iloc[-1]['VOLUME'] * float(stock_data.iloc[-1]['CLOSE'])
+                        if turnover > 30000 :
+                                stock_volatility_state = analytics.volatility(stock_data)
+                                if stock_volatility_state.index[0] and stock_volatility_state[:1][1] >= 5:
+                                        results.append([stock[1], stock_volatility_state[:1][1]])
+                                        print(stock[1], stock_volatility_state[:1][1])
+                                else:
+                                        print(stock[1],"no match")
+                except Exception as e:
+                        print(stock[1],e)
+        return render_template('volatility.html', results_display = results)
+
+        
 
 # database.table_operations('stocks','c')
 
