@@ -591,34 +591,36 @@ def up_down_volume(df):
     current_price = 0
     state = "up"
     df_results = pd.DataFrame(columns=['STATE','CLOSE','VOLUME'])
-    
-    for index, row in df.iterrows():
-            if row['CLOSE'] > current_price:
-                    current_price = row['CLOSE']
-                    state = "up"
-                    df_results = df_results.append({'STATE':'up','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
-            if row['CLOSE'] == current_price and state =='up':
-                    current_price = row['CLOSE']
-                    df_results = df_results.append({'STATE':'up','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
-            if row['CLOSE'] < current_price:
-                    current_price = row['CLOSE']
-                    state = "down"
-                    df_results = df_results.append({'STATE':'down','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
-            if row['CLOSE'] == current_price and state =='down':
-                    current_price = row['CLOSE']
-                    df_results = df_results.append({'STATE':'down','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
-    down  = 0
-    up = 0
-    if len(df_results.groupby('STATE')['VOLUME'].sum()) > 1:
-        down, up = df_results.groupby('STATE')['VOLUME'].sum()
+    if not df.empty:
+        for index, row in df.iterrows():
+                if row['CLOSE'] > current_price:
+                        current_price = row['CLOSE']
+                        state = "up"
+                        df_results = df_results.append({'STATE':'up','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+                if row['CLOSE'] == current_price and state =='up':
+                        current_price = row['CLOSE']
+                        df_results = df_results.append({'STATE':'up','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+                if row['CLOSE'] < current_price:
+                        current_price = row['CLOSE']
+                        state = "down"
+                        df_results = df_results.append({'STATE':'down','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+                if row['CLOSE'] == current_price and state =='down':
+                        current_price = row['CLOSE']
+                        df_results = df_results.append({'STATE':'down','CLOSE':row['CLOSE'],'VOLUME':row['VOLUME']},ignore_index=True)
+        down  = 0
+        up = 0
+        if len(df_results.groupby('STATE')['VOLUME'].sum()) > 1:
+            down, up = df_results.groupby('STATE')['VOLUME'].sum()
+        if len(df_results.groupby('STATE')['VOLUME'].sum()) == 1:
+            if df_results.iloc[0]['STATE'] == 'up':
+                up = df_results.groupby('STATE')['VOLUME'].sum()[0]
+                down = 0
+            else:
+                down = up = df_results.groupby('STATE')['VOLUME'].sum()[0]
+                up = 0
+        return down, up
     else:
-        if df_results.iloc[0]['STATE'] == 'up':
-            up = df_results.groupby('STATE')['VOLUME'].sum()[0]
-            down = 0
-        else:
-            down = up = df_results.groupby('STATE')['VOLUME'].sum()[0]
-            up = 0
-    return down, up
+        return 0,0
 
 def rsi(df, draw_chart = False):
     """

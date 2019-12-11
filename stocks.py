@@ -91,9 +91,8 @@ def stock_details(stock):
                 temp = analytics.up_down_volume(day_df[day_df.index == int(str(day[1]).replace('-',''))])
                 print(temp)
                 data = data.append({'DATE':day[1],'UP':temp[0],'DOWN':temp[1]},ignore_index=True)
-        
-        
         volume_distribution = analytics.draw_volume_distribution(day_df[day_df.index == last_entry_date].groupby('CLOSE')['VOLUME'].sum())
+        
         return render_template('details.html',stock=stock,close_price = list(database.check_last_entries(stock,1))[0][5], daily_return = d_return,volume_distribution =volume_distribution,
         total_up_down_volume = [up_down_vol[0],up_down_vol[1]] , up_down_drawing = analytics.draw_up_down_volumes(data))
 
